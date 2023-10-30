@@ -1,0 +1,40 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 auto;
+}
+
+thead {
+    background-color: #d9d9d9;
+    color: #000;
+}
+
+th {
+    padding: 8px;
+    text-align: center;
+}
+
+th:first-child {
+    border-top-left-radius: 7px;
+}
+th:last-child {
+    border-top-right-radius: 7px;
+}
+
+th:hover {
+    background-color: #555;
+}
+
+tr {
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    padding: 8px;
+    text-align: left;
+    opacity: 0.6;
+}
+
+td:hover {
+    background-color: #f0f0f0;
+}
