@@ -1,0 +1,148 @@
+.wrapper {
+    width: 330px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filterContainer {
+    border: 0.5px solid #bbb;
+}
+.categoryList {
+    flex: 1;
+}
+
+.categoryItem {
+    height: 30px;
+    display: flex;
+}
+
+.categoryItem1 {
+    height: 50px;
+    display: flex;
+    background-color: black;
+    padding-left: 12px;
+}
+
+.allCategory {
+    flex: 1;
+    margin: auto 6px;
+    color: white;
+    font-weight: 700;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 4px;
+}
+
+.barIcon {
+    color: white;
+    font-size: 26px;
+    margin: auto 16px;
+}
+
+.iconContainer {
+    width: 60px;
+}
+
+.categoryIcon {
+    color: black;
+    font-size: 20px;
+    margin: auto 12px;
+}
+
+.categoryIcon1 {
+    color: black;
+    font-size: 24px;
+    margin: auto 18px auto 14px;
+}
+
+.categoryItem {
+    margin: 4px 24px;
+    input[type='radio'] {
+        position: absolute;
+        opacity: 0;
+        + .radio-label {
+            cursor: pointer;
+            &:before {
+                content: '';
+                background: #ccc;
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                position: relative;
+                margin-top: 2px;
+                margin-right: 30px;
+                vertical-align: top;
+                cursor: pointer;
+                text-align: center;
+                transition: all 250ms ease;
+            }
+        }
+        &:checked {
+            + .radio-label {
+                &:before {
+                    background-color: #000;
+                    box-shadow: inset 0 0 0 20px #000;
+                }
+            }
+        }
+        &:focus {
+            + .radio-label {
+                &:before {
+                    outline: none;
+                    border-color: #000;
+                }
+            }
+        }
+        &:disabled {
+            + .radio-label {
+                &:before {
+                    box-shadow: inset 0 0 0 4px #ccc;
+                    border-color: darken(#ccc, 25%);
+                    background: darken(#ccc, 25%);
+                }
+            }
+        }
+        + .radio-label {
+            &:empty {
+                &:before {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}
+
+.advContainer {
+    margin-top: 30px;
+    width: 100%;
+    height: 400px;
+    background-image: url(https://images.samsung.com/vn/smartphones/galaxy-s23-ultra/images/galaxy-s23-ultra-highlights-colors-green-back-s.jpg);
+    background-size: cover;
+}
+
+.newArrivals {
+    font-size: 24px;
+    color: #fff;
+    margin: 20px 10px;
+    user-select: none;
+}
+
+.productName {
+    font-size: 30px;
+    color: #fff;
+    font-weight: 600;
+    margin: 20px 10px;
+    user-select: none;
+}
+
+.shopNowButton {
+    padding: 10px;
+    background-color: #ccc;
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 150px;
+    margin-left: 20px;
+}

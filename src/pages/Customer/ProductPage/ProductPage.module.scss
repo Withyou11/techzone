@@ -1,0 +1,21 @@
+.container {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+}
+
+.mainContain {
+    flex: 1;
+    margin: 0 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.bestSellerAllProducts {
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
