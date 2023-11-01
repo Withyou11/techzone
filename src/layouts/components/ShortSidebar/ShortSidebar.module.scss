@@ -1,0 +1,64 @@
+.wrapper {
+    width: 330px;
+    display: flex;
+    flex-direction: column;
+}
+
+.categoryList {
+    background-color: red;
+    flex: 1;
+}
+
+.categoryItem {
+    border: 0.5px solid #bbb;
+    border-left: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    height: 40px;
+    display: flex;
+}
+
+.categoryItem.hidden {
+    display: none;
+}
+
+.categoryItem1 {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 40px;
+    display: flex;
+    background-color: black;
+}
+
+.allCategory {
+    flex: 1;
+    margin: auto 6px;
+    color: white;
+}
+
+.link {
+    margin: auto 12px;
+    display: flex;
+    flex-direction: row;
+}
+
+.barIcon {
+    color: white;
+    font-size: 26px;
+    margin: auto 16px;
+}
+
+.iconContainer {
+    width: 60px;
+}
+
+.categoryIcon {
+    color: black;
+    font-size: 20px;
+    margin: auto 12px;
+}
+
+.categoryIcon1 {
+    color: black;
+    font-size: 24px;
+    margin: auto 18px auto 14px;
+}

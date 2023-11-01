@@ -1,3 +1,227 @@
-.title {
-    color: red;
+.wrapper {
+    flex: 1;
+}
+
+.aboveWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.aboveRightWrapper {
+    flex: 1;
+    margin-left: 50px;
+}
+
+.advWrapper {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    margin-top: 20px;
+    height: 100%;
+}
+
+.featureProductContainer {
+    flex: 1;
+    height: 410px;
+}
+
+.newProductContainer {
+    display: flex;
+    flex-direction: column;
+    width: 24%;
+    height: 410px;
+}
+
+.newProductItem {
+    margin-top: 50px;
+    margin-left: 20px;
+    user-select: none;
+    color: white;
+    font-weight: 600;
+    font-size: 26px;
+}
+
+.newProductPrice {
+    user-select: none;
+    color: white;
+    margin-left: 20px;
+}
+
+.shopNow {
+    margin-top: 8px;
+    margin-left: 20px;
+    user-select: none;
+    color: white;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.newProductItem1 {
+    width: 100%;
+    height: 45%;
+    background-image: url(https://img.freepik.com/premium-photo/headphones-dark-black-background_68747-106.jpg?w=2000);
+    margin-bottom: 35px;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+.newProductItem2 {
+    width: 100%;
+    height: 46%;
+    background-image: url(https://assets-prd.ignimgs.com/2023/03/06/asusrogstrixg16-1678132710827.jpg);
+    background-size: cover;
+    border-radius: 10px;
+}
+
+.categoryListContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 28px;
+    margin-bottom: 40px;
+    width: 100%;
+    height: 120px;
+    position: relative;
+}
+
+.prevButton {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: white;
+    top: 35px;
+    left: -25px;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+    box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+}
+
+.nextButton {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    top: 35px;
+    right: -25px;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+    box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+}
+
+.bestSellerContainer {
+    margin-top: 70px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.bestSellerTitle {
+    font-size: 36px;
+    font-weight: 600;
+    margin: 10px auto;
+}
+
+.bestSellerAllProducts {
+    height: 1050px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.weekendDiscountContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.weekendDiscountItem {
+    position: relative;
+    width: 42%;
+    height: 260px;
+    border-radius: 20px;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.weekendDiscountInfo {
+    flex: 1;
+    margin: 30px 20px;
+}
+
+.weekendDiscountTitle {
+    opacity: 0.5;
+}
+
+.weekendDiscountName {
+    font-size: 34px;
+    font-weight: 600;
+}
+
+.weekendDiscountOff {
+    font-weight: 500;
+}
+
+.weekendDiscountShopNow {
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 600;
+    margin-top: 50px;
+}
+
+.imagweekendDiscountImg {
+    position: absolute;
+    bottom: -70px;
+    right: -70px;
+    width: 65%;
+    height: 120%;
+}
+
+.topRateWrapper {
+    margin-top: 100px;
+    width: 100%;
+    border: 50px solid #f9f9f9;
+    background-color: #f9f9f9;
+}
+
+.benefitContainer {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.benefitItem {
+    width: 18%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+}
+
+.benefitIcon {
+    font-size: 30px;
+    padding: 10px;
+    position: absolute;
+    top: -30px;
+    left: 40%;
+    border-radius: 50%;
+    background-color: #d9d9d9;
+}
+
+.benefitTitle {
+    margin: 30px auto 10px;
+    font-weight: 600;
+}
+
+.benefitDetail {
+    font-size: 15px;
+    opacity: 0.5;
+    margin: 4px auto;
 }
