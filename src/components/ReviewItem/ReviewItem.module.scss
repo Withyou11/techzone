@@ -1,0 +1,45 @@
+.wrapper {
+    margin: 20px 8%;
+    width: 82%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 30px;
+}
+
+.nameContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.time {
+    font-size: 18px;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.content {
+    margin-left: 100px;
+    margin-top: 12px;
+    margin-right: 50px;
+}

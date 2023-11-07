@@ -1,0 +1,86 @@
+.wrapper {
+    width: 100%;
+    height: var(--default-layout-header-height);
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 10;
+    padding: 0 70px;
+}
+
+.logoContainer {
+    cursor: pointer;
+    margin: auto 0;
+}
+
+.logoText {
+    line-height: 48px;
+    font-weight: 700;
+    font-size: 48px;
+    user-select: none;
+}
+.tabList {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    margin-left: 200px;
+}
+
+.tab {
+    font-size: 20px;
+    margin: auto 20px;
+    cursor: pointer;
+    line-height: var(--default-layout-header-height);
+}
+
+.active {
+    font-weight: 700;
+}
+
+.loginContainer {
+    margin: auto 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+.heartContainer {
+    margin: auto 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.cartContainer {
+    margin: auto 0;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.amount {
+    position: absolute;
+    top: -8px;
+    font-size: 12px;
+    left: 18px;
+    padding: 0 6px;
+    border-radius: 50px;
+    background-color: black;
+    color: white;
+}
+
+.login {
+    font-size: 16px;
+    opacity: 0.6;
+    margin-top: 10px;
+    margin-left: 12px;
+    line-height: 40px;
+}
