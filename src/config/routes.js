@@ -6,6 +6,8 @@ const routes = {
     product_detail: '/detail/:id',
     cart: '/cart/:id',
     history: '/history/:id',
+    login: '/login',
+    register: '/register',
 };
 
 export default routes;
