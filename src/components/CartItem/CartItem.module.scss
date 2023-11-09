@@ -1,0 +1,105 @@
+.wrapper {
+    width: 100%;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: row;
+    margin: 16px 0;
+    border-radius: 30px;
+    align-items: center;
+}
+
+.image {
+    margin: 30px;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.nameContainer {
+    margin-left: 20px;
+    margin-right: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    font-size: 22px;
+}
+
+.price {
+    font-size: 28px;
+    color: #e23600;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.delete {
+    border: 1px solid #707070;
+    padding: 8px;
+    background-color: white;
+    width: 43px;
+    border-radius: 10px;
+    margin-top: -10px;
+    margin-bottom: 30px;
+    align-content: flex-end;
+    position: absolute;
+    top: 0px;
+    right: 50px;
+}
+
+.delete:hover {
+    background-color: #000000;
+    color: white;
+}
+
+.amountContainer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 70px;
+}
+
+.amountText {
+    width: 60px;
+    height: 40px;
+    color: black;
+    border-top: 1px solid #707070;
+    border-bottom: 1px solid #707070;
+    background-color: white;
+    text-align: center;
+    margin: auto;
+    line-height: 40px;
+}
+
+.decreaseButton {
+    width: 40px;
+    height: 40px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid #707070;
+    background-color: white;
+}
+
+.decreaseButton:hover {
+    background-color: #000000;
+    color: white;
+}
+
+.increaseButton {
+    width: 40px;
+    height: 40px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid #707070;
+    background-color: white;
+    margin-right: 50px;
+}
+
+.increaseButton:hover {
+    background-color: #000000;
+    color: white;
+}
