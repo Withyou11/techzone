@@ -1,0 +1,96 @@
+.wrapper {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 30px;
+}
+
+.inputContainer {
+    width: 100%;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.input {
+    width: 100%;
+    background-color: #f1f1f1;
+    padding: 10px 40px;
+    font-size: 20px;
+}
+
+.couponButton {
+    border: 1px solid black;
+    border-radius: 50%;
+    position: absolute;
+    right: 50px;
+    top: 6px;
+    padding: 6px 14px;
+}
+
+.couponButton1 {
+    border: 1px solid black;
+    border-radius: 50%;
+    position: absolute;
+    right: 50px;
+    top: 6px;
+    padding: 10px 14px;
+}
+
+.couponNotify {
+    color: #e23600;
+}
+
+.couponNotify1 {
+    color: #4df0b0;
+}
+
+.totalContainer {
+    margin: 30px 50px;
+}
+
+.discountContainer {
+    display: flex;
+    flex-direction: row;
+    // justify-content: space-around;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 600;
+    flex: 1;
+}
+
+.content {
+    color: #e23600;
+    font-size: 22px;
+}
+
+.nextButton {
+    width: 100%;
+    height: 50px;
+    background-color: black;
+    border-radius: 10px;
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.nextButton:hover {
+    opacity: 0.7;
+}
+
+.next {
+    background-color: transparent;
+    color: white;
+    margin: auto;
+    padding: 10px 48%;
+}
+
+.toast {
+    padding: 10px;
+}
+
+.toastBody {
+    font-size: 14px;
+    font-weight: bold;
+}

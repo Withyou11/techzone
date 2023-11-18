@@ -77,7 +77,7 @@ function CustomerHeader() {
             </div>
             <div onClick={() => handleTabClick('home')} className={cx('cartContainer')}>
                 {cartItemsState?.listProduct && <p className={cx('amount')}>{cartItemsState?.listProduct.length}</p>}
-                <Link to={`/cart/${localStorage.getItem('customer_id')}`}>
+                <Link to={`/cart/1`}>
                     <FontAwesomeIcon style={{ fontSize: '22px' }} icon={faCartShopping}></FontAwesomeIcon>
                 </Link>
             </div>

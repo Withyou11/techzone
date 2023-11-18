@@ -1,0 +1,54 @@
+.wrapper {
+    background-color: #f1f1f1;
+    width: 80%;
+    margin: 20px auto;
+    padding: 8px 20px;
+    border-radius: 14px;
+    position: relative;
+}
+
+.orderId {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.orderInfoContainer {
+    margin: 4px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.date {
+    opacity: 0.7;
+    font-style: italic;
+    margin: auto 0;
+}
+
+.destination {
+    flex: 1;
+    margin: auto 20px;
+}
+
+.moneyContainer {
+    display: flex;
+    font-weight: 500;
+}
+
+.totalText {
+    font-size: 18px;
+    margin: auto 0;
+}
+
+.totalValue {
+    margin: auto 10px;
+    margin-left: 30px;
+    font-size: 26px;
+    color: #e23600;
+}
+
+.actions {
+    position: absolute;
+    top: 4px;
+    right: 20px;
+    font-size: 30px;
+}
