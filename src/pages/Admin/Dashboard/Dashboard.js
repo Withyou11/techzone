@@ -3,14 +3,16 @@ import classNames from 'classnames/bind';
 import { Line, Doughnut } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import TableCustom from '~/components/Admin/TableCustom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 const latestOrderData = [{ ORDER: '#95954', STATUS: '', DATE: '', CUSTOMER: '', TOTAL: '' }];
 const latestOrderColumns = [
-    { Header: 'ORDER', accessor: 'ORDER' },
-    { Header: 'STATUS', accessor: 'STATUS' },
-    { Header: 'DATE', accessor: 'DATE' },
-    { Header: 'CUSTOMER', accessor: 'CUSTOMER' },
-    { Header: 'TOTAL', accessor: 'TOTAL' },
+    { Header: 'ORDER', accessor: 'ORDER', sortable: true, show: true },
+    { Header: 'STATUS', accessor: 'STATUS', sortable: true, show: true },
+    { Header: 'DATE', accessor: 'DATE', sortable: true, show: true },
+    { Header: 'CUSTOMER', accessor: 'CUSTOMER', sortable: true, show: true },
+    { Header: 'TOTAL', accessor: 'TOTAL', sortable: true, show: true },
 ];
 
 const sellingData = [{ PRODUCT: '#95954', SOLD: '' }];
@@ -30,7 +32,10 @@ function Dashboard() {
                 </div>
                 <div className={cx('header-right')}>
                     <input type="text" className={cx('filter')} />
-                    <input type="button" className={cx('btn-filter')} value={'Filter'} />
+                    <div className={cx('btn-filter')}>
+                        <FontAwesomeIcon icon={faFilter} className={cx('filter-icon')} />
+                        <h5 className={cx('filter-text')}>Filter</h5>
+                    </div>
                 </div>
             </div>
             <div className={cx('content')}>

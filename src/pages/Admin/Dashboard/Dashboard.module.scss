@@ -33,11 +33,19 @@
                 flex-shrink: 0;
             }
             .btn-filter {
-                width: 90px;
+                width: 100px;
                 border-radius: 7px;
                 background: #f1f1f1;
                 margin-left: 24px;
                 font-family: 'Inter', sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                .filter-text {
+                    font-size: 1em;
+                    margin: 6px 0px 6px 8px;
+                }
             }
         }
     }

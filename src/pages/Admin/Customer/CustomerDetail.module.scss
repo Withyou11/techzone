@@ -1,0 +1,39 @@
+.main-container {
+    margin: 46px 70px;
+    font-size: 1em;
+}
+
+.title {
+    color: #000;
+    font-size: 2em;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content {
+    margin-top: 40px;
+}
+.form-group {
+    padding: 10px 10px;
+}
+
+.text-large {
+    font-size: 0.9em !important;
+    padding: 10px 20px;
+}
+.card-header-style {
+    padding: 14px 20px;
+    color: #fff;
+    background-color: #000;
+}
+.btn-custom {
+    font-size: 0.9em;
+    padding: 8px 12px;
+}
