@@ -4,11 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faFilter } from '@fortawesome/free-solid-svg-icons';
 import products from '~/Statics/products';
 import { Card, Dropdown, Form } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 function CreateProduct() {
     const cx = classNames.bind(styles);
-
-    const dataArray = products;
+    const { id } = useParams();
+    const item = products.filter((x) => x.product_id === id)[0];
 
     return (
         <div className={cx('main-container')}>

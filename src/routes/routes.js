@@ -11,6 +11,7 @@ import AdminCustomers from '~/pages/Admin/Customer/Customer';
 import ProductPage from '~/pages/Customer/ProductPage/ProductPage';
 import ProductDetail from '~/pages/Customer/ProductDetail/ProductDetail';
 import CreateProduct from '~/pages/Admin/Product/CreateProduct';
+import DetailProduct from '~/pages/Admin/Product/DetailProduct';
 import AdminCustomerDetail from '~/pages/Admin/Customer/CustomerDetail';
 import AdminOrders from '~/pages/Admin/Order/Order';
 import AdminCategories from '~/pages/Admin/Category/Category';
@@ -28,6 +29,7 @@ const publicRoutes = [
     { path: config.routes.adminOrders, component: AdminOrders, layout: AdminLayout },
     { path: config.routes.adminCategory, component: AdminCategories, layout: AdminLayout },
     { path: config.routes.createProduct, component: CreateProduct, layout: AdminLayout },
+    { path: config.routes.detailProduct, component: DetailProduct, layout: AdminLayout },
     { path: config.routes.product_categoty, component: ProductPage },
     { path: config.routes.products, component: ProductPage, layout: DefaultLayout },
     { path: config.routes.product_detail, component: ProductDetail },

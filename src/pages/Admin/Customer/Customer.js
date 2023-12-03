@@ -5,6 +5,7 @@ import { faAdd, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { Table } from 'ka-table';
 import { DataType, EditingMode, SortingMode } from 'ka-table/enums';
 import products from '~/Statics/products';
+import { Link } from 'react-router-dom';
 
 function Customer() {
     const cx = classNames.bind(styles);
@@ -37,10 +38,10 @@ function Customer() {
                             return (
                                 <tr>
                                     <td>
-                                        <a href="/admin/customers/detail" className={cx('product')}>
+                                        <Link to={`detail/${value.product_id}`} className={cx('product')}>
                                             <img className={cx('product-img')} src={value.image} alt="img-product" />
                                             <div>{value.name}</div>
-                                        </a>
+                                        </Link>
                                     </td>
                                     <td>{value.categoryName}</td>
                                     <td>{value.amount}@gmail.com</td>

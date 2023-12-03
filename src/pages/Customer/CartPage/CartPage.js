@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './CartPage.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { ams } from 'react-router-dom';
 import FunctionTitle from '~/components/FunctionTitle/FunctionTitle';
 import CartItem from '~/components/CartItem/CartItem';
 import { faCheck, faQuestion } from '@fortawesome/free-solid-svg-icons';
