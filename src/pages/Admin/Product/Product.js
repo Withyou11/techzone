@@ -13,6 +13,8 @@ import * as Icons from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import categoryApi from '~/api/categoryApi';
+import axiosClient from '~/api/axiosClient';
+import productApi from '~/api/productApi';
 
 function Product() {
     const loadingRef = useRef(null);
@@ -24,29 +26,30 @@ function Product() {
     const [icons, setIcons] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/products?page=' + page).then((res) => {
-            if (res.status === 200) {
-                let resData = res.data;
-                if (resData.success) {
-                    setData(resData.data);
-                    console.log(resData);
+        async function productData() {
+            try {
+                let list = await productApi.getPage(page);
+                if (list.success) {
+                    setData(list.data);
                 }
-            }
-        });
-        async function fetchData() {
-            let list = await categoryApi.getAll();
-            if (list.success) {
-                let categories = list.data.map((value, index) => {
-                    return {
-                        value: value.name,
-                        label: value.name,
-                    };
-                });
-                categories.push({ value: '', label: 'All' });
-                setIcons(categories);
-            }
+            } catch (ex) {}
         }
-
+        async function fetchData() {
+            try {
+                let list = await categoryApi.getAll();
+                if (list.success) {
+                    let categories = list.data.map((value, index) => {
+                        return {
+                            value: value.name,
+                            label: value.name,
+                        };
+                    });
+                    categories.push({ value: '', label: 'All' });
+                    setIcons(categories);
+                }
+            } catch (ex) {}
+        }
+        productData();
         fetchData();
     }, []);
 

@@ -6,11 +6,25 @@ import { Table } from 'ka-table';
 import { DataType, EditingMode, SortingMode } from 'ka-table/enums';
 import products from '~/Statics/products';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axiosClient from '~/api/axiosClient';
+import customerApi from '~/api/customerApi';
 
 function Customer() {
     const cx = classNames.bind(styles);
-
-    const dataArray = products;
+    const [data, setData] = useState([]);
+    const [page, setPage] = useState(1);
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                let list = await customerApi.getPage(page);
+                if (list.success) {
+                    setData(list.data);
+                }
+            } catch (ex) {}
+        }
+        fetchData();
+    }, []);
 
     return (
         <div className={cx('main-container')}>
@@ -34,17 +48,21 @@ function Customer() {
                         <th>Email</th>
                     </thead>
                     <tbody>
-                        {dataArray.map((value, index) => {
+                        {data.map((value, index) => {
                             return (
                                 <tr>
                                     <td>
-                                        <Link to={`detail/${value.product_id}`} className={cx('product')}>
-                                            <img className={cx('product-img')} src={value.image} alt="img-product" />
+                                        <Link to={`detail/${value.customer_id}`} className={cx('product')}>
+                                            <img
+                                                className={cx('product-img')}
+                                                src={value.account.avatar}
+                                                alt="img-product"
+                                            />
                                             <div>{value.name}</div>
                                         </Link>
                                     </td>
-                                    <td>{value.categoryName}</td>
-                                    <td>{value.amount}@gmail.com</td>
+                                    <td>{value.phone_number}</td>
+                                    <td>{value.account.email}</td>
                                 </tr>
                             );
                         })}

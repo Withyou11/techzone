@@ -1,0 +1,53 @@
+.side-navigation-panel-select-option-text {
+    color: white;
+    text-wrap: nowrap;
+}
+.svg-inline--fa {
+    color: white;
+}
+.side-navigation-panel-select-inner-option-text {
+    color: white;
+}
+.side-navigation-panel-select-option-icon {
+    color: white;
+}
+.icon {
+    font-size: 20px;
+    width: 40px;
+}
+.side-navigation-panel-select-wrap:hover {
+    .side-navigation-panel-select-option-text,
+    .svg-inline--fa,
+    .side-navigation-panel-select-option-icon {
+        color: black;
+        transition: 0.5s;
+    }
+}
+
+.side-navigation-panel-select-inner-wrap:hover {
+    .side-navigation-panel-select-inner-option-text {
+        color: black;
+        transition: 0.5s;
+    }
+}
+
+.side-navigation-panel
+    .side-navigation-panel-select
+    .side-navigation-panel-select-inner
+    .side-navigation-panel-select-inner-wrap
+    .side-navigation-panel-select-inner-option
+    .side-navigation-panel-select-inner-option-wrap
+    .side-navigation-panel-select-inner-option-text {
+    font-size: 0.875em !important;
+    line-height: 1.5em !important;
+}
+
+.side-navigation-panel-select-option-selected .svg-inline--fa,
+.side-navigation-panel-select-option-selected .side-navigation-panel-select-option-text,
+.side-navigation-panel-select-option-selected .side-navigation-panel-select-option-icon {
+    color: black;
+}
+
+.side-navigation-panel-select-inner-option-selected .side-navigation-panel-select-inner-option-text {
+    color: black;
+}

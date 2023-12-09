@@ -7,6 +7,9 @@ const routes = {
     adminCategory: '/admin/categories',
     createProduct: '/admin/products/create',
     adminCustomerDtl: '/admin/customers/detail/:id',
+    adminInquiry: '/admin/inquiries',
+    adminOrderDtl: '/admin/orders/:id',
+
     detailProduct: '/admin/products/detail/:id',
     products: '/products',
     product_categoty: '/products/:categoryName',

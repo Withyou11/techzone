@@ -7,6 +7,11 @@ const productApi = {
         return res.data;
     },
 
+    getPage: async (page) => {
+        const res = await axiosClient.get('/products?page=' + page);
+        return res.data;
+    },
+
     getById: async (product_id) => {
         const res = await axiosClient.get(`${url}${product_id}`);
         return res.data;

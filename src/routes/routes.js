@@ -15,6 +15,8 @@ import DetailProduct from '~/pages/Admin/Product/DetailProduct';
 import AdminCustomerDetail from '~/pages/Admin/Customer/CustomerDetail';
 import AdminOrders from '~/pages/Admin/Order/Order';
 import AdminCategories from '~/pages/Admin/Category/Category';
+import AdminInquiry from '~/pages/Admin/Inquiry/Inquiry';
+import AdminOrderDtl from '~/pages/Admin/Order/OrderDetail';
 import CartPage from '~/pages/Customer/CartPage/CartPage';
 import History from '~/pages/Customer/History/History';
 import Login from '~/pages/Customer/Login/Login';
@@ -28,6 +30,9 @@ const publicRoutes = [
     { path: config.routes.adminCustomerDtl, component: AdminCustomerDetail, layout: AdminLayout },
     { path: config.routes.adminOrders, component: AdminOrders, layout: AdminLayout },
     { path: config.routes.adminCategory, component: AdminCategories, layout: AdminLayout },
+    { path: config.routes.adminInquiry, component: AdminInquiry, layout: AdminLayout },
+    { path: config.routes.adminOrderDtl, component: AdminOrderDtl, layout: AdminLayout },
+
     { path: config.routes.createProduct, component: CreateProduct, layout: AdminLayout },
     { path: config.routes.detailProduct, component: DetailProduct, layout: AdminLayout },
     { path: config.routes.product_categoty, component: ProductPage },

@@ -1,15 +1,16 @@
-import styles from './CustomerDetail.module.scss';
+import styles from './OrderDetail.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faFilter } from '@fortawesome/free-solid-svg-icons';
 import products from '~/Statics/products';
 import { Card, Dropdown, Form } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import customerApi from '~/api/customerApi';
 import axios from 'axios';
+import orderApi from '~/api/orderApi';
 
-function CustomerDetail() {
+function OrderDetail() {
     const cx = classNames.bind(styles);
     const { id } = useParams();
     const [item, setItem] = useState({});
@@ -17,7 +18,7 @@ function CustomerDetail() {
     useEffect(() => {
         async function fetchData() {
             try {
-                let list = await customerApi.getById(id);
+                let list = await orderApi.getById(id);
                 if (list.success) {
                     setItem(list.data);
                 }
@@ -30,7 +31,7 @@ function CustomerDetail() {
         <div className={cx('main-container')}>
             <div className={cx('header')}>
                 <div>
-                    <h6 className={cx('title')}>Customer Detail</h6>
+                    <h6 className={cx('title')}>Order Detail</h6>
                 </div>
             </div>
             <div className={cx('content')}>
@@ -39,51 +40,37 @@ function CustomerDetail() {
                         <div className={cx('me-lg-4', 'col-lg-8')}>
                             <Card className={cx('col-12', 'mb-5')}>
                                 <Card.Header className={cx('card-header-style')}>
-                                    <h3 className={cx('h2', 'fw-bold')}>Customer Information </h3>
+                                    <h3 className={cx('h2', 'fw-bold')}>Items</h3>
                                 </Card.Header>
-                                <Card.Body className={cx('a')}>
-                                    <div className={cx('form-group', 'mb-3', 'd-md-flex')}>
-                                        <div className={cx('mb-3', 'col-md-6 ', 'col-12')}>
-                                            <label className={cx('form-control-label', 'h4')}>Name</label>
-                                            <div className={cx('me-2')}>
-                                                <div className={cx('text-large')}>{item.name}</div>
-                                            </div>
-                                        </div>
-                                        <div className={cx('mb-3', 'col-md-6 ', 'col-12')}>
-                                            <label className={cx('form-control-label', 'h4')}>Gender</label>
-                                            <div className={cx('me-2')}>
-                                                <div className={cx('text-large')}>{item.gender}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className={cx('form-group', 'mb-3', 'd-md-flex')}>
-                                        <div className={cx('mb-3', 'col-md-6 ', 'col-12')}>
-                                            <label className={cx('form-control-label', 'h4')}>Phone Number</label>
-                                            <div className={'me-2'}>
-                                                <div className={cx('text-large')}>{item.phone_number}</div>
-                                            </div>
-                                        </div>
-                                        <div className={cx('mb-3', 'col-md-6 ', 'col-12')}>
-                                            <label className={cx('form-control-label', 'h4')}>Email</label>
-                                            <div className={cx('me-2')}>
-                                                <div className={cx('text-large')}>
-                                                    {item.account ? item.account.email : ''}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={cx('form-group', 'mb-3')}>
-                                        <label className={cx('form-control-label', 'h4')}>Address</label>
-                                        <div className={'me-2'}>
-                                            <div className={cx('text-large')}>
-                                                {item.address
-                                                    ? item.address.street + ' Street, ' + item.address.city + ' City'
-                                                    : ''}
-                                            </div>
-                                        </div>
-                                    </div>
+                                <Card.Body className={cx('p-0')}>
+                                    <table className={cx('sa-table', 'table', 'text-nowrap', 'm-0')} width="100%">
+                                        <tbody className={cx('p-0')}>
+                                            <tr className={cx('border-0')}>
+                                                <td className={cx('d-flex', 'overflow-hidden')}>
+                                                    <div>
+                                                        <img height="60" width="60" src="" alt="prd" />
+                                                    </div>
+                                                    <div className={cx('vertical-middle')}>
+                                                        <Link className="" href="">
+                                                            Product name
+                                                        </Link>
+                                                    </div>
+                                                </td>
+                                                <td>@item.Product.Price</td>
+                                                <td style={{ minWidth: 40 }}>2</td>
+                                                <td>
+                                                    <div>
+                                                        <strong>$</strong>99
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </Card.Body>
+                                <Card.Footer className={cx('card-header-style', 'd-flex', 'justify-content-between')}>
+                                    <h3 className={cx('h3', 'fw-bold')}>Total</h3>
+                                    <h3 className={cx('h3')}>$100</h3>
+                                </Card.Footer>
                             </Card>
                             <Card className={cx('col-12', 'mb-3')}>
                                 <Card.Header className={cx('card-header-style')}>
@@ -139,4 +126,4 @@ function CustomerDetail() {
     );
 }
 
-export default CustomerDetail;
+export default OrderDetail;

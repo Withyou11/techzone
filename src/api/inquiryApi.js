@@ -1,9 +1,14 @@
 import axiosClient from './axiosClient';
 
-const url = '/invoice/';
+const url = '/inquiry/';
 const inquiryApi = {
     getAll: async () => {
         const res = await axiosClient.get(url);
+        return res.data;
+    },
+
+    getPage: async (page) => {
+        const res = await axiosClient.get('/inquiry?page=' + page);
         return res.data;
     },
 
