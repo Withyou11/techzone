@@ -1,6 +1,16 @@
 const routes = {
     home: '/',
-    dashboard: '/dashboard',
+    adminDashboard: '/admin/dashboard',
+    adminProducts: '/admin/products',
+    adminCustomers: '/admin/customers',
+    adminOrders: '/admin/orders',
+    adminCategory: '/admin/categories',
+    createProduct: '/admin/products/create',
+    adminCustomerDtl: '/admin/customers/detail/:id',
+    adminInquiry: '/admin/inquiries',
+    adminOrderDtl: '/admin/orders/:id',
+
+    detailProduct: '/admin/products/detail/:id',
     products: '/products',
     product_categoty: '/products/:categoryName',
     product_detail: '/detail/:id',

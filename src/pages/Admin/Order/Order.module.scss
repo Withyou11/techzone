@@ -1,0 +1,156 @@
+.main-container {
+    margin: 46px 70px;
+
+    .title {
+        color: #000;
+        font-size: 2em;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .subtitle {
+            color: #000;
+            font-size: 1em;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;
+        }
+        .header-right {
+            display: flex;
+
+            .filter {
+                font-size: 1em;
+                padding: 6px 20px;
+                border-radius: 7px;
+                border: 2px solid #d9d9d9;
+                background: #fff;
+                width: 300px;
+                flex-shrink: 0;
+            }
+            .btn-filter {
+                width: 100px;
+                border-radius: 7px;
+                background: #f1f1f1;
+                margin-left: 18px;
+                font-family: 'Inter', sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                .filter-text {
+                    font-size: 1em;
+                    margin: 6px 0px 6px 8px;
+                }
+            }
+            .btn-add-new {
+                width: 120px;
+                border-radius: 7px;
+                background-color: black;
+                margin-left: 18px;
+                font-family: 'Inter', sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                .filter-text {
+                    font-size: 1em;
+                    margin: 6px 0px 6px 8px;
+                    color: #f1f1f1;
+                }
+                .icon {
+                    color: #f1f1f1;
+                }
+            }
+        }
+    }
+    .content {
+        margin-top: 40px;
+
+        table {
+            tbody {
+                tr {
+                    td {
+                        padding: 12px 16px;
+                        font-weight: 500;
+                        .out-stock {
+                            font-weight: 700;
+                            color: #e50000;
+                        }
+                        .in-stock {
+                            font-weight: 700;
+                            color: #1bc386;
+                        }
+                    }
+                    .product {
+                        display: flex;
+                        align-items: center;
+                        .product-img {
+                            width: 60px;
+                            height: 60px;
+                            margin-right: 10px;
+                            background-color: #d9d9d9;
+                            padding: 5px;
+                            border-radius: 7px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .main-container {
+        .header {
+            display: block;
+
+            .header-right {
+                margin-top: 10px;
+            }
+        }
+        .content {
+            .statistics {
+                display: block;
+
+                .statistic-linear {
+                    width: 100%;
+                }
+
+                .statistic-doughnut {
+                    width: 100%;
+                    margin-left: 0px;
+                    margin-top: 10px;
+                }
+            }
+            .trending {
+                display: block;
+
+                .latest_order {
+                    width: 100%;
+                }
+
+                .top_selling {
+                    width: 100%;
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}
+@media (max-width: 900px) {
+    .main-container {
+        .content {
+            .figure {
+                .figure-item {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,67 @@
+.main-container {
+    margin: 46px 70px;
+    font-size: 1em;
+}
+
+.title {
+    color: #000;
+    font-size: 2em;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content {
+    margin-top: 40px;
+}
+.form-group {
+    padding: 10px 10px;
+}
+
+.text-large {
+    font-size: 0.9em !important;
+    padding: 10px 20px;
+}
+.card-header-style {
+    padding: 14px 20px;
+    color: #000;
+    background-color: #fff;
+}
+.btn-custom {
+    font-size: 0.9em;
+    padding: 8px 12px;
+}
+
+.sa-table {
+    --sa-table--padding-x: 1.5rem;
+    --sa-table__row--padding-x: 0.5rem;
+    --sa-table__row--padding-y: 0.75rem;
+    --sa-table__header-row--padding-y: 0.625rem;
+    --sa-table__group-row--padding-y: 0.5rem;
+    width: 100%;
+}
+
+table {
+    padding-left: 12px;
+}
+
+tr {
+    vertical-align: middle;
+}
+
+.vertical-middle {
+    line-height: 60px;
+    vertical-align: middle;
+    max-width: 400px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
