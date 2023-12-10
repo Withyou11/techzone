@@ -28,7 +28,7 @@ function CustomerHeader() {
         <header className={cx('wrapper')}>
             <div onClick={() => handleTabClick('home')} className={cx('logoContainer')}>
                 <a href="/#" className={cx('logoText')}>
-                    LIMO
+                    TechZone
                 </a>
             </div>
             <ul className={cx('tabList')}>

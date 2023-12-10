@@ -67,13 +67,13 @@ function Login() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
-                <p className={cx('limo')}>LIMO</p>
+                <p className={cx('limo')}>TechZone</p>
                 <p className={cx('title')}>Login</p>
             </div>
             <div className={cx('content')}>
                 <div className={cx('logoContainer')}>
                     <img className={cx('logo')} src={logo} alt="logo" />
-                    <p className={cx('limoLarge')}>LIMO</p>
+                    <p className={cx('limoLarge')}>TechZone</p>
                 </div>
                 <form className={cx('form')} onSubmit={handleFormSubmit}>
                     <h3 style={{ fontSize: '28px', opacity: 0.6 }}>Login</h3>

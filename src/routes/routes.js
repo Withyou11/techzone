@@ -12,6 +12,9 @@ import CartPage from '~/pages/Customer/CartPage/CartPage';
 import History from '~/pages/Customer/History/History';
 import Login from '~/pages/Customer/Login/Login';
 import Register from '~/pages/Customer/Register/Register';
+import ShippingPage from '~/pages/Customer/ShippingPage/ShippingPage';
+import Profile from '~/pages/Customer/Profile/Profile';
+import AboutUs from '~/pages/Customer/AboutUs/AboutUs';
 // Public routes
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -23,6 +26,9 @@ const publicRoutes = [
     { path: config.routes.history, component: History, layout: DefaultLayout },
     { path: config.routes.login, component: Login, layout: AuthLayout },
     { path: config.routes.register, component: Register, layout: AuthLayout },
+    { path: config.routes.shipping, component: ShippingPage },
+    { path: config.routes.profile, component: Profile, layout: DefaultLayout },
+    { path: config.routes.about, component: AboutUs },
 ];
 
 const privateRoutes = [];
