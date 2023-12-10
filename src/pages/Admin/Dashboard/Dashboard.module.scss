@@ -1,3 +1,197 @@
-.title {
-    color: red;
+.main-container {
+    margin: 46px 70px;
+
+    .title {
+        color: #000;
+        font-size: 2em;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .subtitle {
+            color: #000;
+            font-size: 1em;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;
+        }
+        .header-right {
+            display: flex;
+
+            .filter {
+                font-size: 1em;
+                padding: 10px 10px;
+                border-radius: 7px;
+                border: 2px solid #d9d9d9;
+                background: #fff;
+                width: 300px;
+                flex-shrink: 0;
+            }
+            .btn-filter {
+                width: 100px;
+                border-radius: 7px;
+                background: #f1f1f1;
+                margin-left: 24px;
+                font-family: 'Inter', sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                .filter-text {
+                    font-size: 1em;
+                    margin: 6px 0px 6px 8px;
+                }
+            }
+        }
+    }
+    .content {
+        margin-top: 40px;
+
+        .figure {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+
+            .figure-item {
+                margin-top: 10px;
+                padding: 15px 25px;
+                min-width: 340px;
+                width: 30%;
+                border-radius: 10px;
+                background-color: #f1f1f1;
+                display: flex;
+                align-items: center;
+
+                .figure-item-title {
+                    margin-bottom: 10px;
+                    font-weight: 600;
+                }
+                .figure-item-trending-up {
+                    margin-top: 10px;
+                    padding: 4px 16px;
+                    border-radius: 20px;
+                    background-color: #00ffaa3a;
+                    font-size: 0.7em;
+                    color: #14c38e;
+                }
+                .figure-item-trending-down {
+                    margin-top: 10px;
+                    padding: 4px 16px;
+                    border-radius: 20px;
+                    background-color: #fcd2d1;
+                    font-size: 0.7em;
+                    color: #ff5c58;
+                }
+            }
+        }
+        .statistics {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+
+            .statistic-linear {
+                padding: 40px 30px;
+                border-radius: 7px;
+                // background-color: #d9d9d9;
+                background-color: #f1f1f1;
+                width: 70%;
+                // max-height: 600px;
+            }
+            .statistic-doughnut {
+                padding: 40px 30px;
+                margin-left: 30px;
+                border-radius: 7px;
+                width: 30%;
+                // max-height: 600px;
+                background-color: #f1f1f1;
+            }
+
+            h4 {
+                margin-bottom: 16px;
+                font-size: 1.5em;
+            }
+        }
+        .trending {
+            display: flex;
+            width: 100%;
+            margin-top: 40px;
+            justify-content: space-between;
+
+            .latest_order {
+                padding: 40px 30px;
+                background-color: #f1f1f1;
+                border-radius: 7px;
+                width: 70%;
+            }
+            .top_selling {
+                width: 30%;
+                padding: 40px 30px;
+                background-color: #f1f1f1;
+                border-radius: 7px;
+                margin-left: 30px;
+            }
+
+            h4 {
+                margin-bottom: 16px;
+                font-size: 1.5em;
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .main-container {
+        .header {
+            display: block;
+
+            .header-right {
+                margin-top: 10px;
+            }
+        }
+        .content {
+            .statistics {
+                display: block;
+
+                .statistic-linear {
+                    width: 100%;
+                }
+
+                .statistic-doughnut {
+                    width: 100%;
+                    margin-left: 0px;
+                    margin-top: 10px;
+                }
+            }
+            .trending {
+                display: block;
+
+                .latest_order {
+                    width: 100%;
+                }
+
+                .top_selling {
+                    width: 100%;
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}
+@media (max-width: 900px) {
+    .main-container {
+        .content {
+            .figure {
+                .figure-item {
+                    width: 100%;
+                }
+            }
+        }
+    }
 }
