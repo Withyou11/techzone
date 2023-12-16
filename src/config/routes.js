@@ -22,6 +22,9 @@ const routes = {
     history: '/history/:id',
     login: '/login',
     register: '/register',
+    shipping: '/shipping',
+    profile: '/profile/:id',
+    about: '/about',
 };
 
 export default routes;

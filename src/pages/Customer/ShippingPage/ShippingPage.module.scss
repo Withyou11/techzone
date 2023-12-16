@@ -1,0 +1,126 @@
+.wrapper {
+    width: 100%;
+}
+
+.form {
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 50px;
+}
+
+.personalInfoContainer {
+    background-color: #f1f1f1;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.personalInfoContainer {
+    font-size: 20px;
+    margin: 0px;
+    font-weight: 500;
+}
+
+.cityContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.inputContainer1 {
+    font-size: 18px;
+    border-radius: 10px;
+    padding: 14px 30px;
+    width: 48%;
+    background-color: #f1f1f1;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.inputContainer {
+    font-size: 18px;
+    border-radius: 10px;
+    padding: 14px 30px;
+    width: 100%;
+    background-color: #f1f1f1;
+    height: 40px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    height: 80px;
+    border: none;
+}
+
+.inputContainer:focus {
+    outline: none;
+    border: none;
+}
+
+.title {
+    margin-bottom: 12px;
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.radioButton {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.radioContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.radioLabel {
+    font-size: 20px;
+}
+
+.submitContainer {
+    margin-top: 30px;
+    border-radius: 20px;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+}
+
+.submit {
+    margin: 12px auto;
+    margin-top: 0;
+    width: 90%;
+    height: 50px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+}
+
+.submit:hover {
+    opacity: 0.7;
+}
+
+.totalContainer {
+    margin: 10px 50px;
+}
+
+.discountContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.feeTitle {
+    font-size: 20px;
+    font-weight: 600;
+    flex: 1;
+}
+
+.content1 {
+    font-weight: 600;
+    color: black;
+    font-size: 20px;
+}
+
+.content {
+    font-weight: 600;
+    color: #e23600;
+    font-size: 20px;
+}

@@ -13,53 +13,62 @@ import { CartContext } from '../../../Context/CartContext/CartContext';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import productApi from '~/api/productApi';
 
 function ProductDetail() {
     const cartItems = useContext(CartContext);
     const cartItemsState = cartItems.cartItemsState;
     const setCartItemsState = cartItems.setCartItemsState;
     const { id } = useParams();
-    const [selectedProduct, setSelectedProduct] = useState(products[id]);
-    // const [selectedProduct, setSelectedProduct] = useState({});
+    // const [selectedProduct, setSelectedProduct] = useState(products[id]);
+    const [selectedProduct, setSelectedProduct] = useState({});
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     useEffect(() => {
-        fetch(`http://localhost:3001/products/${id}`, {
-            method: 'GET',
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data.product);
-                setSelectedProduct(data.product);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        async function productData() {
+            try {
+                let productData = await productApi.getById(id);
+                console.log(productData);
+                setSelectedProduct(productData.data);
+            } catch (ex) {}
+        }
+        productData();
         window.scrollTo(0, 0);
     }, []);
+    // useEffect(() => {
+    //     fetch(`http://localhost:3001/products/${id}`, {
+    //         method: 'GET',
+    //     })
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             console.log(data.product);
+    //             setSelectedProduct(data.product);
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    //     window.scrollTo(0, 0);
+    // }, []);
     const cx = classNames.bind(styles);
     const title = 'Home > Products > ' + selectedProduct.name;
     const filteredProducts = products.filter(
         (product) => product.categoryName === selectedProduct.category && product.id !== selectedProduct.id,
     );
     const renderStars = () => {
+        const roundedRating = Math.round(selectedProduct.rating_average); // Làm tròn số sao
+
         const stars = [];
         for (let i = 0; i < 5; i++) {
-            const starClassName = cx('star', { filled: i < selectedProduct.rating });
+            const starClassName = cx('star', { filled: i < roundedRating });
             stars.push(
                 <FontAwesomeIcon
                     key={i}
                     icon={faStar}
                     className={starClassName}
-                    style={{ color: i < selectedProduct.rating ? '#fdbf00' : '#ccc' }}
+                    style={{ color: i < roundedRating ? '#fdbf00' : '#ccc' }}
                 />,
             );
         }
-        stars.push(
-            <p key="5" style={{ opacity: 0.6, marginLeft: '12px', marginTop: '10px' }}>
-                2 reviews
-            </p>,
-        );
         return stars;
     };
 
@@ -217,13 +226,13 @@ function ProductDetail() {
             </div>
             <p className={cx('highlightTitle')}>All Reviews</p>
             <hr style={{ margin: 0, marginBottom: '12px' }} />
-            <div className={cx('reviewCotainer')}>
+            {/* <div className={cx('reviewCotainer')}>
                 {selectedProduct.reviews.map((review) => (
                     <li key={review.id} style={{ listStyle: 'none' }}>
                         <ReviewItem data={review} />
                     </li>
                 ))}
-            </div>
+            </div> */}
             {showToast && (
                 <ToastContainer position="bottom-end" className="p-3" style={{ zIndex: 1 }}>
                     <Toast className={cx('toast')}>

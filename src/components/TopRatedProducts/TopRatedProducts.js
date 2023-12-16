@@ -9,20 +9,20 @@ function TopRatedProducts(data) {
     return (
         <div className={cx('wrapper')}>
             {data.data === 1 &&
-                products.slice(1, 10).map((item) => (
-                    <div key={item.id}>
+                products.slice(1, 10).map((item, index) => (
+                    <div key={index}>
                         <TopRatedItem data={item} />
                     </div>
                 ))}{' '}
             {data.data === 2 &&
-                products.slice(10, 19).map((item) => (
-                    <div key={item.id}>
+                products.slice(10, 19).map((item, index) => (
+                    <div key={index}>
                         <TopRatedItem data={item} />
                     </div>
                 ))}
             {data.data === 3 &&
-                products.slice(20, 23).map((item) => (
-                    <div key={item.id}>
+                products.slice(20, 23).map((item, index) => (
+                    <div key={index}>
                         <TopRatedItem data={item} />
                     </div>
                 ))}

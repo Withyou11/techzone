@@ -25,16 +25,16 @@ function Footer() {
                 </ul>
             </div>
             <div className={cx('infoContainer')}>
-                <h4>Limo Information</h4>
+                <h4>TechZone Information</h4>
                 <ul>
-                    <li>Limo introduction</li>
+                    <li>TechZone introduction</li>
                     <li>Service center</li>
                     <li>FAQ</li>
                     <li>Recruitment</li>
                 </ul>
             </div>
             <div className={cx('infoContainer')}>
-                <h4>Limo community</h4>
+                <h4>TechZone community</h4>
                 <ul>
                     <li>
                         Call to purchase (toll-free) <span style={{ color: '#0058DB' }}>0123456789</span>

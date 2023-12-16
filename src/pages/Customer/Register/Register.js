@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 import styles from './Register.module.scss';
 import logo from '~/assets/images/logo.png';
 import { useNavigate, Link } from 'react-router-dom';
+import customerApi from '~/api/customerApi';
+
 function Register() {
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -45,45 +47,58 @@ function Register() {
             return;
         }
 
-        const userData = {
-            name: name,
-            phone_number: phoneNumber,
-            email: email,
-            password: password,
-        };
+        // const userData = {
+        //     email: email,
+        //     name: name,
+        //     phone_number: phoneNumber,
+        //     password: password,
+        // };
+        var form = new FormData();
+        form.append('email', email);
+        form.append('name', name);
+        form.append('phone_number', phoneNumber);
+        form.append('password', password);
+        form.append('gender', 'male');
+        form.append('birthday', '01/01/2002');
+        form.append('address', 'Ha Noi');
 
-        fetch('http://localhost:3001/auth/sign_up', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        })
-            .then((response) => {
-                response.json();
-                console.log(response);
-                if (response.status == 201) {
-                    navigate('/login');
-                }
-            })
-            // .then((data) => {
-            //     console.log(data);
-            // })
-            .catch((error) => {
-                console.error(error);
-            });
+        async function register() {
+            try {
+                let register = await customerApi.create(form);
+                console.log(register);
+            } catch (ex) {}
+        }
+        register();
+
+        // fetch('http://localhost:3001/auth/sign_up', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(userData),
+        // })
+        //     .then((response) => {
+        //         response.json();
+        //         console.log(response);
+        //         if (response.status == 201) {
+        //             navigate('/login');
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     };
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
-                <p className={cx('limo')}>LIMO</p>
+                <p className={cx('limo')}>TechZone</p>
                 <p className={cx('title')}>Register</p>
             </div>
             <div className={cx('content')}>
                 <div className={cx('logoContainer')}>
                     <img className={cx('logo')} src={logo} alt="logo" />
-                    <p className={cx('limoLarge')}>LIMO</p>
+                    <p className={cx('limoLarge')}>TechZone</p>
                 </div>
                 <form className={cx('form')} onSubmit={handleFormSubmit}>
                     <h3 style={{ fontSize: '28px', opacity: 0.6 }}>Register</h3>

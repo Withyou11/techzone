@@ -17,7 +17,7 @@ const customerApi = {
     },
 
     create: async (customer) => {
-        const res = await axiosClient.post(url, JSON.stringify(customer));
+        const res = await axiosClient.post(url, customer);
         return res.data;
     },
 
