@@ -7,6 +7,7 @@ import { DataType, EditingMode, SortingMode } from 'ka-table/enums';
 import products from '~/Statics/products';
 import { useEffect, useState } from 'react';
 import orderApi from '~/api/orderApi';
+import { Link } from 'react-router-dom';
 
 function Order() {
     const cx = classNames.bind(styles);
@@ -41,17 +42,19 @@ function Order() {
             <div className={cx('content')}>
                 <table>
                     <thead>
-                        <th>ID</th>
-                        <th>Date</th>
-                        <th>Payment Method</th>
-                        <th>Total Price</th>
-                        <th>Status</th>
+                        <th style={{ width: '10%' }}>ID</th>
+                        <th style={{ width: '20%' }}>Date</th>
+                        <th style={{ width: '15%' }}>Payment Method</th>
+                        <th style={{ width: '15%' }}>Total Price</th>
+                        <th style={{ width: '15%' }}>Status</th>
                     </thead>
                     <tbody>
                         {data.map((value, index) => {
                             return (
                                 <tr>
-                                    <td className={cx('product')}>{value.order_id}</td>
+                                    <td className={cx('product')}>
+                                        <Link to={`${value.order_id}`}>#{value.order_id}</Link>
+                                    </td>
                                     <td>{value.date}</td>
                                     <td>{value.payment_method}</td>
                                     <td>{value.total_price}</td>

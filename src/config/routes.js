@@ -9,6 +9,10 @@ const routes = {
     adminCustomerDtl: '/admin/customers/detail/:id',
     adminInquiry: '/admin/inquiries',
     adminOrderDtl: '/admin/orders/:id',
+    adminReview: '/admin/reviews',
+    adminWarehouse: '/admin/warehouse',
+    createWarehouse: '/admin/warehouse/create',
+    detailWarehouse: '/admin/warehouse/:id',
 
     detailProduct: '/admin/products/detail/:id',
     products: '/products',

@@ -13,7 +13,7 @@ const categoryApi = {
     },
 
     create: async (category) => {
-        const res = await axiosClient.post(url, JSON.stringify(category));
+        const res = await axiosClient.post(url, category);
         return res.data;
     },
 

@@ -1,4 +1,4 @@
-import { faDashboard, faDollar, faInbox, faLaptop, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faDashboard, faDollar, faInbox, faLaptop, faPhone, faWarehouse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import './MenuNavigation.modules.scss';
@@ -42,14 +42,24 @@ function MenuNavigation() {
                             },
                             {
                                 title: 'Customer Review',
-                                itemId: '/admin/review',
+                                itemId: '/admin/reviews',
                             },
                         ],
                     },
                     {
                         title: 'Product',
-                        itemId: '/admin/products',
+                        itemId: 'product#',
                         elemBefore: () => <FontAwesomeIcon icon={faLaptop} className={'icon'} />,
+                        subNav: [
+                            {
+                                title: 'Products List',
+                                itemId: '/admin/products',
+                            },
+                            {
+                                title: 'Categories List',
+                                itemId: '/admin/categories',
+                            },
+                        ],
                     },
                     {
                         title: 'Order',
@@ -65,6 +75,11 @@ function MenuNavigation() {
                                 itemId: '/admin/trackorder',
                             },
                         ],
+                    },
+                    {
+                        title: 'Warehouse',
+                        itemId: '/admin/warehouse',
+                        elemBefore: () => <FontAwesomeIcon icon={faWarehouse} className={'icon'} />,
                     },
                 ]}
             />

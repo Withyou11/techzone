@@ -37,7 +37,9 @@
                 border-radius: 7px;
                 margin-left: 18px;
                 font-family: 'Inter', sans-serif;
-
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 cursor: pointer;
                 .filter-text {
                     font-size: 1em;
@@ -146,29 +148,6 @@
             .figure {
                 .figure-item {
                     width: 100%;
-                }
-            }
-        }
-    }
-}
-
-@media (max-width: 800px) {
-    .main-container {
-        .title {
-        }
-        .header {
-            .header-right {
-                display: block;
-
-                .btn-filter {
-                    margin-left: 0px;
-                    margin-top: 10px;
-                    margin-bottom: 10px;
-                    display: block;
-                }
-
-                .btn-add-new {
-                    margin-left: 0px;
                 }
             }
         }

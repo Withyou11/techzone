@@ -35,7 +35,8 @@ function Inquiry() {
                     <thead>
                         <th style={{ width: '15%' }}>Date</th>
                         <th style={{ width: '20%' }}>Customer</th>
-                        <th style={{ width: '60%' }}>Content</th>
+                        <th style={{ width: '20%' }}>Employee</th>
+                        <th style={{ width: '40%' }}>Content</th>
                         <th style={{ width: '10%' }}>Star</th>
                     </thead>
                     <tbody>
@@ -44,6 +45,9 @@ function Inquiry() {
                                 <tr>
                                     <td>{value.date}</td>
                                     <td>{value.customer.name}</td>
+                                    <td>
+                                        {value.employee.name} #{value.employee.employee_id}
+                                    </td>
                                     <td>{value.content}</td>
                                     <td>{value.star}</td>
                                 </tr>
