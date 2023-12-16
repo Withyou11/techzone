@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import logo from '~/assets/images/logo.png';
 import { useNavigate, Link } from 'react-router-dom';
+import authApi from '~/api/authApi';
 
 function Login() {
     const navigate = useNavigate();
@@ -28,40 +29,40 @@ function Login() {
         }
 
         // API call for login
-        const userData = {
-            email: email,
-            password: password,
-        };
-
-        fetch('http://localhost:3001/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                if (data.account_info.role === 'customer') {
-                    localStorage.setItem('customer_id', data.account_info.customer_id);
-                    localStorage.setItem('name', data.account_info.name);
-                    localStorage.setItem('role', data.account_info.role);
-                    localStorage.setItem('activeTab', 'home');
-                    navigate('/');
-                } else if (data.account_info.role === 'employee') {
-                    localStorage.setItem('employee', data.account_info.name);
-                    navigate('/order');
-                } else {
-                    navigate('/dashboard');
-                }
-            })
-            .catch((error) => {
-                // Handle any errors
-                console.error(error);
-            });
-
-        // Other form submission logic
+        async function login() {
+            try {
+                let login = await authApi.login(email, password);
+                console.log(login);
+            } catch (ex) {}
+        }
+        login();
+        // fetch('http://localhost:3001/auth/login', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(userData),
+        // })
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         console.log(data);
+        //         if (data.account_info.role === 'customer') {
+        //             localStorage.setItem('customer_id', data.account_info.customer_id);
+        //             localStorage.setItem('name', data.account_info.name);
+        //             localStorage.setItem('role', data.account_info.role);
+        //             localStorage.setItem('activeTab', 'home');
+        //             navigate('/');
+        //         } else if (data.account_info.role === 'employee') {
+        //             localStorage.setItem('employee', data.account_info.name);
+        //             navigate('/order');
+        //         } else {
+        //             navigate('/dashboard');
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         // Handle any errors
+        //         console.error(error);
+        //     });
     };
 
     return (

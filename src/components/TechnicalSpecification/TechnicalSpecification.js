@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './TechnicalSpecification.module.scss';
 function TechnicalSpecification(data) {
-    console.log(data);
     const cx = classNames.bind(styles);
     return (
         <div className={cx('wrapper')}>

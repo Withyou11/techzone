@@ -5,20 +5,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 function ReviewItem(data) {
     const cx = classNames.bind(styles);
     const renderStars = () => {
+        const roundedRating = Math.round(data.data.rating_average); // Làm tròn số sao
+
         const stars = [];
         for (let i = 0; i < 5; i++) {
-            const starClassName = cx('star', { filled: i < data.data.rating });
+            const starClassName = cx('star', { filled: i < roundedRating });
             stars.push(
                 <FontAwesomeIcon
                     key={i}
                     icon={faStar}
                     className={starClassName}
-                    style={{ color: i < data.data.rating ? '#fdbf00' : '#ccc' }}
+                    style={{ color: i < roundedRating ? '#fdbf00' : '#ccc' }}
                 />,
             );
         }
         return stars;
     };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('infoContainer')}>

@@ -72,13 +72,16 @@ function CustomerHeader() {
                 <FontAwesomeIcon style={{ fontSize: '22px' }} icon={faArrowRightFromBracket}></FontAwesomeIcon>
             </div>
             <div className={cx('heartContainer')}>
-                <p className={cx('amount')}>0</p>
-                <FontAwesomeIcon style={{ fontSize: '22px' }} icon={faHeart}></FontAwesomeIcon>
+                {cartItemsState?.listProduct && <p className={cx('amount')}>0</p>}
+                <FontAwesomeIcon style={{ fontSize: '22px', color: 'black' }} icon={faHeart}></FontAwesomeIcon>
             </div>
             <div onClick={() => handleTabClick('home')} className={cx('cartContainer')}>
                 {cartItemsState?.listProduct && <p className={cx('amount')}>{cartItemsState?.listProduct.length}</p>}
                 <Link to={`/cart/1`}>
-                    <FontAwesomeIcon style={{ fontSize: '22px' }} icon={faCartShopping}></FontAwesomeIcon>
+                    <FontAwesomeIcon
+                        style={{ fontSize: '22px', color: 'black' }}
+                        icon={faCartShopping}
+                    ></FontAwesomeIcon>
                 </Link>
             </div>
         </header>

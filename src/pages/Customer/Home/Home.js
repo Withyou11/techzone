@@ -107,8 +107,8 @@ function Home() {
                 <h2 className={cx('bestSellerTitle')}>Our Best Seller</h2>
                 <hr style={{ margin: '20px 0' }} />
                 <div className={cx('bestSellerAllProducts')}>
-                    {products.slice(18, 26).map((item) => (
-                        <div key={item.id}>
+                    {products.slice(18, 26).map((item, index) => (
+                        <div key={index}>
                             <ProductItem data={item} />
                         </div>
                     ))}
