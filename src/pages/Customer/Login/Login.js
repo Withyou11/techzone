@@ -28,41 +28,27 @@ function Login() {
             return;
         }
 
+        var form = new FormData();
+        form.append('email', email);
+        form.append('password', password);
+
         // API call for login
         async function login() {
             try {
-                let login = await authApi.login(email, password);
-                console.log(login);
-            } catch (ex) {}
+                let login = await authApi.login(form);
+                localStorage.setItem('expires', login.expires_in);
+                localStorage.setItem('accessToken', login.access_token);
+                localStorage.setItem('refreshToken', login.refresh_token);
+
+                let profile = await authApi.profile();
+                localStorage.setItem('customerName', profile.customer.name);
+                // if else gì đó ở đây
+                navigate('/');
+            } catch (ex) {
+                alert('Login failed!');
+            }
         }
         login();
-        // fetch('http://localhost:3001/auth/login', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(userData),
-        // })
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         console.log(data);
-        //         if (data.account_info.role === 'customer') {
-        //             localStorage.setItem('customer_id', data.account_info.customer_id);
-        //             localStorage.setItem('name', data.account_info.name);
-        //             localStorage.setItem('role', data.account_info.role);
-        //             localStorage.setItem('activeTab', 'home');
-        //             navigate('/');
-        //         } else if (data.account_info.role === 'employee') {
-        //             localStorage.setItem('employee', data.account_info.name);
-        //             navigate('/order');
-        //         } else {
-        //             navigate('/dashboard');
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         // Handle any errors
-        //         console.error(error);
-        //     });
     };
 
     return (

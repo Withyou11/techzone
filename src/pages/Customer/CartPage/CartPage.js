@@ -11,6 +11,7 @@ import { CartContext } from '../../../Context/CartContext/CartContext';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import cartApi from '~/api/cartApi';
 
 function CartPage() {
     const navigate = useNavigate();
@@ -31,21 +32,41 @@ function CartPage() {
 
     const cx = classNames.bind(styles);
     const handleNextPage = () => {
-        // if (cartItemsState.listProduct?.length === 0) {
-        //     setToastMessage('Your cart is empty');
-        //     setShowToast(true);
-        //     setTimeout(() => {
-        //         setShowToast(false);
-        //     }, 3000);
-        // } else {
-        //     navigate('/shipping');
-        // }
+        if (cartItemsState.cart_details?.length === 0) {
+            setToastMessage('Your cart is empty');
+            setShowToast(true);
+            setTimeout(() => {
+                setShowToast(false);
+            }, 3000);
+        } else {
+            navigate('/shipping');
+        }
     };
     const handleDelete = (itemId) => {
-        // const newItem = {
-        //     cart_id: cartItemsState.cart_id,
-        //     product_id: itemId,
-        // };
+        async function deleteProductFromCart() {
+            try {
+                let deleteProduct = await cartApi.deleteProductFromCart(cartItemsState.cart_id, itemId);
+            } catch (ex) {
+                alert('Cannot delete product from cart');
+            }
+        }
+        deleteProductFromCart();
+
+        let total_price = 0;
+        const updatedCartItems = cartItemsState.cart_details?.filter((item) => item.product_id !== itemId);
+        for (let i = 0; i < updatedCartItems.length; i++) {
+            const product = cartItemsState.cart_details[i];
+            const { price, quantity } = product;
+            const orderValue = price * quantity;
+            total_price += orderValue;
+        }
+        const updateItem = {
+            cart_id: cartItemsState.cart_id,
+            discount_id: cartItemsState.discount_id,
+            cart_details: updatedCartItems,
+            total_price: total_price,
+        };
+        setCartItemsState(updateItem);
         // fetch('http://localhost:3001/carts/delete_cart_product', {
         //     method: 'PATCH',
         //     headers: {
@@ -56,9 +77,9 @@ function CartPage() {
         //     .then((respone) => respone.json())
         //     .then((data) => {
         //         let total_price = 0;
-        //         const updatedCartItems = cartItemsState.listProduct?.filter((item) => item.product_id !== itemId);
+        //         const updatedCartItems = cartItemsState.cart_details?.filter((item) => item.product_id !== itemId);
         //         for (let i = 0; i < updatedCartItems.length; i++) {
-        //             const product = cartItemsState.listProduct[i];
+        //             const product = cartItemsState.cart_details[i];
         //             const { price, quantity } = product;
         //             const orderValue = price * quantity;
         //             total_price += orderValue;
@@ -66,7 +87,7 @@ function CartPage() {
         //         const updateItem = {
         //             cart_id: cartItemsState.cart_id,
         //             discount_id: cartItemsState.discount,
-        //             listProduct: updatedCartItems,
+        //             cart_details: updatedCartItems,
         //             total_price: total_price,
         //         };
         //         setCartItemsState(updateItem);
@@ -75,86 +96,75 @@ function CartPage() {
 
     // Hàm xử lý sự kiện giảm số lượng sản phẩm
     const handleDecrease = (itemId, quantity) => {
-        const newItem = {
+        var form = new FormData();
+        form.append('product_id', itemId);
+        form.append('quantity', quantity);
+
+        async function decreaseProductInCart() {
+            try {
+                let decreaseProduct = await cartApi.update(cartItemsState.cart_id, form);
+            } catch (ex) {
+                alert('Cannot decrease product in cart');
+            }
+        }
+        decreaseProductInCart();
+
+        let total_price = cartItemsState.total_price;
+        const updatedCartItems = cartItemsState.cart_details?.map((item) => {
+            if (item.product_id == itemId) {
+                if (item.quantity > 1) {
+                    total_price -= item.price;
+                    return {
+                        ...item,
+                        quantity: item.quantity - 1,
+                    };
+                }
+            }
+            return item;
+        });
+        const updateItem = {
             cart_id: cartItemsState.cart_id,
-            product_id: itemId,
-            quantity: quantity,
+            discount_id: cartItemsState.discount_id,
+            cart_details: updatedCartItems,
+            total_price: total_price,
         };
-        fetch('http://localhost:3001/carts/update_cart_product', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newItem),
-        })
-            .then((response) => response.json())
-            .then((responseData) => {
-                let total_price = cartItemsState.total_price;
-                const updatedCartItems = cartItemsState.listProduct?.map((item) => {
-                    if (item.product_id == itemId) {
-                        if (item.quantity > 1) {
-                            total_price -= item.price;
-                            return {
-                                ...item,
-                                quantity: item.quantity - 1,
-                            };
-                        }
-                    }
-                    return item;
-                });
-                const updateItem = {
-                    cart_id: cartItemsState.cart_id,
-                    discount_id: cartItemsState.discount,
-                    listProduct: updatedCartItems,
-                    total_price: total_price,
-                };
-                setCartItemsState(updateItem);
-            })
-            .catch((error) => {
-                // Handle any errors
-                console.error(error);
-            });
+        setCartItemsState(updateItem);
     };
 
     // Hàm xử lý sự kiện tăng số lượng sản phẩm
     const handleIncrease = (itemId, quantity) => {
-        const newItem = {
-            cart_id: cartItemsState.cart_id,
-            product_id: itemId,
-            quantity: quantity,
-        };
-        fetch('http://localhost:3001/carts/update_cart_product', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newItem),
-        })
-            .then((response) => response.json())
-            .then((responseData) => {
-                let total_price = cartItemsState.total_price;
-                const updatedCartItems = cartItemsState.listProduct?.map((item) => {
-                    if (item.product_id == itemId) {
-                        total_price += item.price;
-                        return {
-                            ...item,
-                            quantity: item.quantity + 1,
-                        };
-                    }
-                    return item;
-                });
-                const updateItem = {
-                    cart_id: cartItemsState.cart_id,
-                    discount_id: cartItemsState.discount,
-                    listProduct: updatedCartItems,
-                    total_price: total_price,
+        var form = new FormData();
+        form.append('product_id', itemId);
+        form.append('quantity', quantity);
+
+        async function increaseProductInCart() {
+            try {
+                let increaseProduct = await cartApi.update(cartItemsState.cart_id, form);
+                console.log(increaseProduct);
+            } catch (ex) {
+                alert('Cannot increase product in cart');
+            }
+        }
+        increaseProductInCart();
+
+        let total_price = cartItemsState.total_price;
+        const updatedCartItems = cartItemsState.cart_details?.map((item) => {
+            if (item.product_id == itemId) {
+                total_price += item.price;
+                return {
+                    ...item,
+                    quantity: item.quantity + 1,
                 };
-                setCartItemsState(updateItem);
-            })
-            .catch((error) => {
-                // Handle any errors
-                console.error(error);
-            });
+            }
+            return item;
+        });
+        const updateItem = {
+            cart_id: cartItemsState.cart_id,
+            discount_id: cartItemsState.discount_id,
+            cart_details: updatedCartItems,
+            total_price: total_price,
+        };
+        setCartItemsState(updateItem);
     };
 
     const [inputValue, setInputValue] = useState('');
@@ -185,7 +195,7 @@ function CartPage() {
                     const updateItem = {
                         cart_id: cartItemsState.cart_id,
                         discount_id: cartItemsState.discount,
-                        listProduct: cartItemsState.listProduct,
+                        cart_details: cartItemsState.cart_details,
                         discount_value: responseData.discount_value,
                         total_price: cartItemsState.total_price - discountValue,
                     };
@@ -209,7 +219,7 @@ function CartPage() {
         <div>
             <FunctionTitle title="Home > Shopping cart" />
             <div className={cx('wrapper')}>
-                {cartItemsState?.listProduct?.map((item, index) => (
+                {cartItemsState?.cart_details?.map((item, index) => (
                     <div key={index}>
                         <CartItem
                             data={item}
@@ -219,7 +229,7 @@ function CartPage() {
                         />
                     </div>
                 ))}
-                {/* {cartItemsState?.listProduct.length === 0 && (
+                {/* {cartItemsState?.cart_details.length === 0 && (
                     <p style={{ fontSize: '18px', fontStyle: 'italic', margin: '50px' }}>
                         You have no items in your shopping cart
                     </p>

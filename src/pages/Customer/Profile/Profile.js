@@ -3,21 +3,18 @@ import classNames from 'classnames/bind';
 import styles from './Profile.module.scss';
 import FunctionTitle from '~/components/FunctionTitle/FunctionTitle';
 import avatar from '~/assets/images/avatar.png';
+import authApi from '~/api/authApi';
 function Profile() {
     const [customerInfo, setCustomerInfo] = useState({});
 
     useEffect(() => {
-        fetch(`http://localhost:3001/customers/${localStorage.getItem('customer_id')}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((respone) => respone.json())
-            .then((data) => {
-                console.log(data);
-                setCustomerInfo(data.customer);
-            });
+        async function getProfileInfo() {
+            try {
+                let profile = await authApi.profile();
+                setCustomerInfo(profile.customer);
+            } catch (ex) {}
+        }
+        getProfileInfo();
         window.scrollTo(0, 0);
     }, []);
     const cx = classNames.bind(styles);

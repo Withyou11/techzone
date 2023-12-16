@@ -1,7 +1,22 @@
 import axiosClient from './axiosClient';
 
-const url = '/categories/';
+const url = '/carts/';
 const cartApi = {
+    viewCart: async () => {
+        const res = await axiosClient.get(`${url}cart`);
+        return res.data;
+    },
+
+    deleteProductFromCart: async (cartId, productId) => {
+        const res = await axiosClient.delete(`${url}${cartId}/products/${productId}`);
+        return res.data;
+    },
+
+    addProductToCart: async (productId) => {
+        const res = await axiosClient.post(`${url}addProduct/${productId}`);
+        return res.data;
+    },
+
     getAll: async () => {
         const res = await axiosClient.get(url);
         return res.data;
@@ -17,8 +32,10 @@ const cartApi = {
         return res.data;
     },
 
-    update: async (category) => {
-        const res = await axiosClient.put(`${url}${category.category_id}`, category);
+    update: async (cartId, data) => {
+        console.log('cartId: ', cartId);
+        console.log('data: ', data);
+        const res = await axiosClient.put(`${url}${cartId}`, data);
         return res.data;
     },
 

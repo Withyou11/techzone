@@ -1,21 +1,21 @@
 import { useState, createContext, useEffect } from 'react';
+import cartApi from '~/api/cartApi';
 const CartContext = createContext();
 
 function CartProvider({ children }) {
     const [cartItemsState, setCartItemsState] = useState({});
     useEffect(() => {
-        if (localStorage.getItem('customer_id')) {
-            fetch(`http://localhost:3001/carts/${localStorage.getItem('customer_id')}`, {
-                method: 'GET',
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    setCartItemsState(data.cart);
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+        if (localStorage.getItem('customerName')) {
+            async function getCart() {
+                try {
+                    let cartData = await cartApi.viewCart();
+                    setCartItemsState(cartData.data.cart);
+                } catch (ex) {
+                    console.log(ex);
+                    alert('Get Cart data failed!');
+                }
+            }
+            getCart();
         }
     }, []);
     const value = {

@@ -31,6 +31,11 @@ const productApi = {
         const res = await axiosClient.delete(`${url}${product_id}`);
         return res.data;
     },
+
+    getSimilarProducts: async (product_id) => {
+        const res = await axiosClient.get(`${url}similarProduct/${product_id}`);
+        return res.data;
+    },
 };
 
 export default productApi;

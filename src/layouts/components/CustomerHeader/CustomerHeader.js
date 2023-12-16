@@ -65,19 +65,21 @@ function CustomerHeader() {
             </ul>
             <div className={cx('loginContainer')}>
                 <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-                {!localStorage.getItem('name') && <p className={cx('login')}>Login</p>}
-                {localStorage.getItem('name') && <p className={cx('login')}>{localStorage.getItem('name')}</p>}
+                {!localStorage.getItem('customerName') && <p className={cx('login')}>Login</p>}
+                {localStorage.getItem('customerName') && (
+                    <p className={cx('login')}>{localStorage.getItem('customerName')}</p>
+                )}
             </div>
             <div onClick={handleLogout} className={cx('loginContainer')}>
                 <FontAwesomeIcon style={{ fontSize: '22px' }} icon={faArrowRightFromBracket}></FontAwesomeIcon>
             </div>
             <div className={cx('heartContainer')}>
-                {cartItemsState?.listProduct && <p className={cx('amount')}>0</p>}
+                {cartItemsState?.cart_details && <p className={cx('amount')}>0</p>}
                 <FontAwesomeIcon style={{ fontSize: '22px', color: 'black' }} icon={faHeart}></FontAwesomeIcon>
             </div>
             <div onClick={() => handleTabClick('home')} className={cx('cartContainer')}>
-                {cartItemsState?.listProduct && <p className={cx('amount')}>{cartItemsState?.listProduct.length}</p>}
-                <Link to={`/cart/1`}>
+                {cartItemsState?.cart_details && <p className={cx('amount')}>{cartItemsState?.cart_details.length}</p>}
+                <Link to={`/cart`}>
                     <FontAwesomeIcon
                         style={{ fontSize: '22px', color: 'black' }}
                         icon={faCartShopping}
