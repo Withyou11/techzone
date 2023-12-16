@@ -7,6 +7,10 @@ const orderApi = {
         return res.data;
     },
 
+    getPage: async (page) => {
+        const res = await axiosClient.get(`/order?page=${page}`);
+        return res.data;
+    },
     getById: async (order_id) => {
         const res = await axiosClient.get(`${url}${order_id}`);
         return res.data;

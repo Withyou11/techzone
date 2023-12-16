@@ -15,22 +15,22 @@ function AdminLayout({ children }) {
         <div>
             <div className={cx('main-contain')}>
                 <div className={cx('row', 'flex-nowrap')}>
-                    {open ? (
-                        <div className={cx('bg-dark', 'pt-4', 'p-0')} style={{ width: 300, transition: '0.3s' }}>
-                            <p className={cx('ms-4', 'mb-4', 'text-white', 'fw-bold')}>MENU</p>
-                            <MenuNavigation />
-                        </div>
-                    ) : (
-                        <div
-                            className={cx('bg-dark', 'pt-4', 'p-0')}
-                            style={{ width: 0, overflow: 'hidden', transition: '0.3s' }}
-                        >
-                            <p className={cx('ms-4', 'mb-4', 'text-white', 'fw-bold')}>MENU</p>
-                            <MenuNavigation />
-                        </div>
-                    )}
+                    <div
+                        className={cx('bg-dark', 'pt-4', 'p-0')}
+                        style={
+                            open
+                                ? { width: '20%', transition: '0.3s' }
+                                : { width: '0%', transition: '0.3s', overflow: 'hidden' }
+                        }
+                    >
+                        <p className={cx('ms-4', 'mb-4', 'text-white', 'fw-bold')}>MENU</p>
+                        <MenuNavigation />
+                    </div>
 
-                    <div className={cx('min-vh-100', 'mt-4')}>
+                    <div
+                        className={cx('min-vh-100', 'mt-4', 'm-0')}
+                        style={open ? { width: '80%', transition: '0.3s' } : { width: '100%', transition: '0.3s' }}
+                    >
                         <div className={cx('container-fluid', 'body-content', 'ms-2', 'me-2')}>
                             <div id="btn-menu" className={cx('p', 'text-decoration-none', 'mb-5', 'm-0')}>
                                 <div>

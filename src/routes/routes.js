@@ -17,10 +17,14 @@ import AdminOrders from '~/pages/Admin/Order/Order';
 import AdminCategories from '~/pages/Admin/Category/Category';
 import AdminInquiry from '~/pages/Admin/Inquiry/Inquiry';
 import AdminOrderDtl from '~/pages/Admin/Order/OrderDetail';
+import AdminReview from '~/pages/Admin/Review/Review';
+import AdminWarehouse from '~/pages/Admin/Warehouse/Warehouse';
 import CartPage from '~/pages/Customer/CartPage/CartPage';
 import History from '~/pages/Customer/History/History';
 import Login from '~/pages/Customer/Login/Login';
 import Register from '~/pages/Customer/Register/Register';
+import CreateWarehouse from '~/pages/Admin/Warehouse/CreateWarehouse';
+import DetailWarehouse from '~/pages/Admin/Warehouse/DetailWarehouse';
 import ShippingPage from '~/pages/Customer/ShippingPage/ShippingPage';
 import Profile from '~/pages/Customer/Profile/Profile';
 import AboutUs from '~/pages/Customer/AboutUs/AboutUs';
@@ -35,6 +39,10 @@ const publicRoutes = [
     { path: config.routes.adminCategory, component: AdminCategories, layout: AdminLayout },
     { path: config.routes.adminInquiry, component: AdminInquiry, layout: AdminLayout },
     { path: config.routes.adminOrderDtl, component: AdminOrderDtl, layout: AdminLayout },
+    { path: config.routes.adminReview, component: AdminReview, layout: AdminLayout },
+    { path: config.routes.adminWarehouse, component: AdminWarehouse, layout: AdminLayout },
+    { path: config.routes.createWarehouse, component: CreateWarehouse, layout: AdminLayout },
+    { path: config.routes.detailWarehouse, component: DetailWarehouse, layout: AdminLayout },
 
     { path: config.routes.createProduct, component: CreateProduct, layout: AdminLayout },
     { path: config.routes.detailProduct, component: DetailProduct, layout: AdminLayout },

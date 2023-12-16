@@ -18,12 +18,12 @@ const productApi = {
     },
 
     create: async (product) => {
-        const res = await axiosClient.post(url, JSON.stringify(product));
+        const res = await axiosClient.post(url, product);
         return res.data;
     },
 
-    update: async (product) => {
-        const res = await axiosClient.put(`${url}${product.product_id}`, product);
+    update: async (product_id, product) => {
+        const res = await axiosClient.put(`${url}${product_id}`, product);
         return res.data;
     },
 
