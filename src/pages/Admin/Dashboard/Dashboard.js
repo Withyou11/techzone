@@ -5,37 +5,71 @@ import Chart from 'chart.js/auto';
 import TableCustom from '~/components/Admin/TableCustom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import dashboardApi from '~/api/dashboardApi';
+import { Link } from 'react-router-dom';
 
-const latestOrderData = [{ ORDER: '#95954', STATUS: '', DATE: '', CUSTOMER: '', TOTAL: '' }];
-const latestOrderColumns = [
-    { Header: 'ORDER', accessor: 'ORDER', sortable: true, show: true },
-    { Header: 'STATUS', accessor: 'STATUS', sortable: true, show: true },
-    { Header: 'DATE', accessor: 'DATE', sortable: true, show: true },
-    { Header: 'CUSTOMER', accessor: 'CUSTOMER', sortable: true, show: true },
-    { Header: 'TOTAL', accessor: 'TOTAL', sortable: true, show: true },
-];
+// const latestOrderData = [{ ORDER: '#95954', STATUS: '', DATE: '', CUSTOMER: '', TOTAL: '' }];
+// const latestOrderColumns = [
+//     { Header: 'ORDER', accessor: 'ORDER', sortable: true, show: true },
+//     { Header: 'STATUS', accessor: 'STATUS', sortable: true, show: true },
+//     { Header: 'DATE', accessor: 'DATE', sortable: true, show: true },
+//     { Header: 'CUSTOMER', accessor: 'CUSTOMER', sortable: true, show: true },
+//     { Header: 'TOTAL', accessor: 'TOTAL', sortable: true, show: true },
+// ];
 
-const sellingData = [{ PRODUCT: '#95954', SOLD: '' }];
-const sellingColumns = [
-    { Header: 'PRODUCT', accessor: 'PRODUCT' },
-    { Header: 'SOLD', accessor: 'SOLD' },
-];
+// const sellingData = [{ PRODUCT: '#95954', SOLD: '' }];
+// const sellingColumns = [
+//     { Header: 'PRODUCT', accessor: 'PRODUCT' },
+//     { Header: 'SOLD', accessor: 'SOLD' },
+// ];
 
 function Dashboard() {
     const cx = classNames.bind(styles);
+    const [revenue, setRevenue] = useState(0);
+    const [orderCount, setOrderCount] = useState(0);
+    const [custCount, setCustCount] = useState(0);
+    const [revenueStatistic, setRevenueStatistic] = useState([]);
+    const [lastedOrder, setLastedOrder] = useState([]);
+    const [bestSelling, setBestSelling] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const req_revenue = await dashboardApi.getTotalRevenue();
+                const req_order_count = await dashboardApi.getTotalOrder();
+                const req_cust_count = await dashboardApi.getTotalCustomer();
+                const req_revenue_arr = await dashboardApi.getRevenueMonthArray();
+                const req_lasted_order = await dashboardApi.getLastedOrder();
+                const req_best_selling = await dashboardApi.getBestSelling();
+                if (req_revenue.success) {
+                    setRevenue(req_revenue.data.total_revenue);
+                }
+                if (req_order_count.success) {
+                    setOrderCount(req_order_count.data.total_orders);
+                }
+                if (req_cust_count.success) {
+                    setCustCount(req_cust_count.data.total_customers);
+                }
+                if (req_revenue_arr.success) {
+                    setRevenueStatistic(req_revenue_arr.data);
+                }
+                if (req_lasted_order.success) {
+                    setLastedOrder(req_lasted_order.data);
+                }
+                if (req_best_selling.success) {
+                    setBestSelling(req_best_selling.data);
+                }
+            } catch (ex) {}
+        }
+        fetchData();
+    }, []);
     return (
         <div className={cx('main-container')}>
             <h6 className={cx('title')}>Dashboard</h6>
             <div className={cx('header')}>
                 <div>
                     <p className={cx('subtitle')}>View your current sales & summary</p>
-                </div>
-                <div className={cx('header-right')}>
-                    <input type="text" className={cx('filter')} />
-                    <div className={cx('btn-filter')}>
-                        <FontAwesomeIcon icon={faFilter} className={cx('filter-icon')} />
-                        <h5 className={cx('filter-text')}>Filter</h5>
-                    </div>
                 </div>
             </div>
             <div className={cx('content')}>
@@ -44,7 +78,7 @@ function Dashboard() {
                     <div className={cx('figure-item')}>
                         <div className={cx('figure-item-content')}>
                             <h4 className={cx('figure-item-title')}>Revenue</h4>
-                            <h2 className={cx('figure-item-value')}>$21,827.13</h2>
+                            <h2 className={cx('figure-item-value')}>${revenue}</h2>
                             <p>vs. 3 months prior to 27 Feb</p>
                         </div>
                         <h6 className={cx('figure-item-trending-up')}>11.4%</h6>
@@ -52,7 +86,7 @@ function Dashboard() {
                     <div className={cx('figure-item')}>
                         <div className={cx('figure-item-content')}>
                             <h4 className={cx('figure-item-title')}>Orders</h4>
-                            <h2 className={cx('figure-item-value')}>1,758</h2>
+                            <h2 className={cx('figure-item-value')}>{orderCount}</h2>
                             <p>vs. 3 months prior to 27 Feb</p>
                         </div>
                         <h6 className={cx('figure-item-trending-down')}>3.2%</h6>
@@ -60,7 +94,7 @@ function Dashboard() {
                     <div className={cx('figure-item')}>
                         <div className={cx('figure-item-content')}>
                             <h4 className={cx('figure-item-title')}>Purchase</h4>
-                            <h2 className={cx('figure-item-value')}>$7,249.31</h2>
+                            <h2 className={cx('figure-item-value')}>{custCount}</h2>
                             <p>vs. 3 months prior to 27 Feb</p>
                         </div>
                         <h6 className={cx('figure-item-trending-up')}>5.7%</h6>
@@ -71,37 +105,26 @@ function Dashboard() {
                         <h4>Sales Report</h4>
                         <Line
                             data={{
-                                labels: [1500, 1600, 1700, 1750, 1800, 1850, 1900, 1950, 1999, 2050],
+                                labels: [
+                                    'Jan',
+                                    'Feb',
+                                    'Mar',
+                                    'Apr',
+                                    'May',
+                                    'Jun',
+                                    'Jul',
+                                    'Aug',
+                                    'Sep',
+                                    'Oct',
+                                    'Nov',
+                                    'Dec',
+                                ],
                                 datasets: [
                                     {
-                                        data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
-                                        label: 'Africa',
+                                        data: revenueStatistic,
+                                        label: 'Revenue',
                                         borderColor: '#3e95cd',
-                                        fill: false,
-                                    },
-                                    {
-                                        data: [282, 350, 411, 502, 635, 809, 947, 1402, 3700, 5267],
-                                        label: 'Asia',
-                                        borderColor: '#8e5ea2',
-                                        fill: false,
-                                    },
-                                    {
-                                        data: [168, 170, 178, 190, 203, 276, 408, 547, 675, 734],
-                                        label: 'Europe',
-                                        borderColor: '#3cba9f',
-                                        fill: false,
-                                    },
-                                    {
-                                        data: [40, 20, 10, 16, 24, 38, 74, 167, 508, 784],
-                                        label: 'Latin America',
-                                        borderColor: '#e8c3b9',
-                                        fill: false,
-                                    },
-                                    {
-                                        data: [6, 3, 2, 2, 7, 26, 82, 172, 312, 433],
-                                        label: 'North America',
-                                        borderColor: '#c45850',
-                                        fill: false,
+                                        fill: true,
                                     },
                                 ],
                             }}
@@ -117,7 +140,7 @@ function Dashboard() {
                             }}
                         />
                     </div>
-                    <div className={cx('statistic-doughnut')}>
+                    {/* <div className={cx('statistic-doughnut')}>
                         <h4>Categories</h4>
                         <Doughnut
                             className={cx('doughnut')}
@@ -138,16 +161,54 @@ function Dashboard() {
                                 },
                             }}
                         />
-                    </div>
+                    </div> */}
                 </div>
                 <div className={cx('trending')}>
                     <div className={cx('latest_order')}>
                         <h4>Latest Order</h4>
-                        <TableCustom data={latestOrderData} columns={latestOrderColumns} />
+                        <table>
+                            <thead>
+                                <th style={{ width: '10%' }}>ID</th>
+                                <th style={{ width: '25%' }}>Date</th>
+                                <th style={{ width: '20%' }}>Total Price</th>
+                                <th style={{ width: '20%' }}>Status</th>
+                            </thead>
+                            <tbody>
+                                {lastedOrder.map((value, index) => {
+                                    console.log(value);
+                                    return (
+                                        <tr>
+                                            <td className={cx('product')}>
+                                                <Link to={`${value.order_id}`}>#{value.order_id}</Link>
+                                            </td>
+                                            <td>{value.date}</td>
+                                            <td>{value.total_price}</td>
+                                            <td className={cx('status')}>{value.status}</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
                     </div>
                     <div className={cx('top_selling')}>
                         <h4>Top selling</h4>
-                        <TableCustom data={sellingData} columns={sellingColumns} />
+                        <table>
+                            <thead>
+                                <th style={{ width: '60%' }}>PRODUCT</th>
+                                <th style={{ width: '40%' }}>SOLD</th>
+                            </thead>
+                            <tbody>
+                                {bestSelling.map((value, index) => {
+                                    console.log(value);
+                                    return (
+                                        <tr>
+                                            <td>{value.name}</td>
+                                            <td>{value.total_sold}</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -6,16 +6,14 @@ import { Link } from 'react-router-dom';
 import reviewApi from '~/api/reviewApi';
 import warehouseApi from '~/api/warehouseApi';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
+import WarehouseItem from '~/components/Admin/WarehouseItem';
 
-function Review() {
-    const loadingRef = useRef(null);
-    const [search, setSearch] = useState('');
+function Warehouse() {
     const [data, setData] = useState([]);
-    const [filter, setFilter] = useState('');
-    const [message, setMessage] = useState('');
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
-        async function productData() {
+        async function fetchData() {
             try {
                 let list = await warehouseApi.getAll();
                 if (list.success) {
@@ -24,7 +22,7 @@ function Review() {
             } catch (ex) {}
         }
 
-        productData();
+        fetchData();
     }, []);
 
     const cx = classNames.bind(styles);
@@ -48,8 +46,18 @@ function Review() {
                     </Link>
                 </div>
             </div>
+            <div className={'row'}>
+                {data.map((value, index) => (
+                    <WarehouseItem
+                        image={value.image}
+                        name={value.warehouse_name}
+                        location={value.location}
+                        id={value.warehouse_id}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
 
-export default Review;
+export default Warehouse;

@@ -14,12 +14,26 @@ function Customer() {
     const cx = classNames.bind(styles);
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
+    async function getCustomerData() {
+        try {
+            let list = await customerApi.getPage(page + 1);
+            if (list.success) {
+                setData([...data, ...list.data]);
+                setPage(page + 1);
+            }
+        } catch (ex) {}
+    }
+    const loadMore = async () => {
+        await getCustomerData();
+    };
     useEffect(() => {
         async function fetchData() {
             try {
                 let list = await customerApi.getPage(page);
                 if (list.success) {
                     setData(list.data);
+                    setLastPage(list.pagination.last_page);
                 }
             } catch (ex) {}
         }
@@ -34,10 +48,6 @@ function Customer() {
                 </div>
                 <div className={cx('header-right')}>
                     <input type="text" className={cx('filter')} />
-                    <div className={cx('btn-filter')}>
-                        <FontAwesomeIcon icon={faFilter} className={cx('icon')} />
-                        <h5 className={cx('filter-text')}>Filter</h5>
-                    </div>
                 </div>
             </div>
             <div className={cx('content')}>
@@ -68,6 +78,13 @@ function Customer() {
                         })}
                     </tbody>
                 </table>
+                {page < lastPage ? (
+                    <div className={cx('opacity-100', 'text-center', 'mt-4')} onClick={(e) => loadMore()}>
+                        Load more
+                    </div>
+                ) : (
+                    ''
+                )}
             </div>
         </div>
     );

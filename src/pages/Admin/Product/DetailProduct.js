@@ -12,6 +12,7 @@ import categoryApi from '~/api/categoryApi';
 import productApi from '~/api/productApi';
 import { NotificationManager } from 'react-notifications';
 import ConfirmDialog from '~/components/Dialog/ConfirmDialog';
+import CloudinaryUploadWidget from '~/components/CloudinaryUploadWidget/CloudinaryUploadWidget';
 
 function DetailProduct() {
     const cx = classNames.bind(styles);
@@ -29,6 +30,8 @@ function DetailProduct() {
     const [specification, setSpecification] = useState([]);
     const [highlight, setHighlight] = useState([]);
     const [isOpenDialog, setIsOpenDialog] = useState(false);
+    const [selectedImages, setSelectedImages] = useState([]);
+
     const [deleteId, setDeleteId] = useState(null);
     useEffect(() => {
         axiosClient.get('http://localhost:8000/api/products/' + id).then((res) => {
@@ -43,6 +46,8 @@ function DetailProduct() {
                     setPrice(product.price);
                     setAmount(product.amount);
                     setPreviewImage(product.image);
+                    const detail_images = JSON.parse(product.detail_images);
+                    setSelectedImages(detail_images);
 
                     const speciData = JSON.parse(product.specifications);
                     const speciObj = Object.entries(speciData).map(([key, value]) => ({
@@ -357,38 +362,30 @@ function DetailProduct() {
                                 <Card.Header className={cx('card-header-style')}>
                                     <h3 className={cx('h2', 'fw-bold')}>Image</h3>
                                 </Card.Header>
+                                <Card.Body>
+                                    <CloudinaryUploadWidget
+                                        uwConfig={{
+                                            cloudName: 'df7ziv4hz',
+                                            uploadPreset: 'h8r2lchy',
+                                        }}
+                                        setPublicId={setSelectedImages}
+                                    />
+                                </Card.Body>
                                 <Card.Body className={cx('p-4', 'mb-3')}>
                                     <div>
-                                        <label for="files" className={cx('btn', 'btn-dark', 'btn-custom')}>
-                                            Select Image
-                                        </label>
-                                        <input
-                                            class="d-none"
-                                            type="file"
-                                            accept=".jpg, .png, .jpeg"
-                                            multiple
-                                            title="search image"
-                                            id="files"
-                                            name="files"
-                                            onChange={handleLoadImage}
-                                        />
-                                    </div>
-                                    <div>
-                                        {selectedFile !== null ? (
+                                        {selectedImages.map((image, index) => (
                                             <img
-                                                src={previewImage}
-                                                id="img"
-                                                alt="user"
-                                                className={cx('w-100', 'mt-4')}
+                                                key={index}
+                                                src={image}
+                                                alt={`Selected ${index}`}
+                                                style={{
+                                                    maxWidth: '100%',
+                                                    maxHeight: '150px',
+                                                    marginRight: '10px',
+                                                    marginBottom: '10px',
+                                                }}
                                             />
-                                        ) : (
-                                            <img
-                                                src={previewImage}
-                                                id="img"
-                                                alt="user"
-                                                className={cx('w-100', 'mt-4')}
-                                            />
-                                        )}
+                                        ))}
                                     </div>
                                 </Card.Body>
                             </Card>

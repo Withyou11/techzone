@@ -13,7 +13,11 @@ const discountApi = {
     },
 
     create: async (discount) => {
-        const res = await axiosClient.post(url, JSON.stringify(discount));
+        const res = await axiosClient.post(url, JSON.stringify(discount), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
         return res.data;
     },
 

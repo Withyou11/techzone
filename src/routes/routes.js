@@ -25,9 +25,12 @@ import Login from '~/pages/Customer/Login/Login';
 import Register from '~/pages/Customer/Register/Register';
 import CreateWarehouse from '~/pages/Admin/Warehouse/CreateWarehouse';
 import DetailWarehouse from '~/pages/Admin/Warehouse/DetailWarehouse';
+import AdminOrderTracker from '~/pages/Admin/Order/OrderTracker';
+import AdminDiscount from '~/pages/Admin/Discount/Discount';
 import ShippingPage from '~/pages/Customer/ShippingPage/ShippingPage';
 import Profile from '~/pages/Customer/Profile/Profile';
 import AboutUs from '~/pages/Customer/AboutUs/AboutUs';
+import AdminReceipt from '~/pages/Admin/Warehouse/Receipt';
 // Public routes
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -36,6 +39,9 @@ const publicRoutes = [
     { path: config.routes.adminCustomers, component: AdminCustomers, layout: AdminLayout },
     { path: config.routes.adminCustomerDtl, component: AdminCustomerDetail, layout: AdminLayout },
     { path: config.routes.adminOrders, component: AdminOrders, layout: AdminLayout },
+    { path: config.routes.adminOrderTracker, component: AdminOrderTracker, layout: AdminLayout },
+    { path: config.routes.adminReceipt, component: AdminReceipt, layout: AdminLayout },
+
     { path: config.routes.adminCategory, component: AdminCategories, layout: AdminLayout },
     { path: config.routes.adminInquiry, component: AdminInquiry, layout: AdminLayout },
     { path: config.routes.adminOrderDtl, component: AdminOrderDtl, layout: AdminLayout },
@@ -43,6 +49,7 @@ const publicRoutes = [
     { path: config.routes.adminWarehouse, component: AdminWarehouse, layout: AdminLayout },
     { path: config.routes.createWarehouse, component: CreateWarehouse, layout: AdminLayout },
     { path: config.routes.detailWarehouse, component: DetailWarehouse, layout: AdminLayout },
+    { path: config.routes.adminDiscount, component: AdminDiscount, layout: AdminLayout },
 
     { path: config.routes.createProduct, component: CreateProduct, layout: AdminLayout },
     { path: config.routes.detailProduct, component: DetailProduct, layout: AdminLayout },

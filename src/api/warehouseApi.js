@@ -13,17 +13,32 @@ const warehouseApi = {
     },
 
     create: async (warehouse) => {
-        const res = await axiosClient.post(url, JSON.stringify(warehouse));
+        const res = await axiosClient.post(url, warehouse);
         return res.data;
     },
 
-    update: async (warehouse) => {
-        const res = await axiosClient.put(`${url}${warehouse.warehouse_id}`, warehouse);
+    // update: async (id, warehouse) => {
+    //     const res = await axiosClient.put(`${url}${id}`, JSON.stringify(warehouse), {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     });
+    //     return res.data;
+    // },
+    update: async (id, warehouse) => {
+        const res = await axiosClient.put(`${url}${id}`, warehouse);
         return res.data;
     },
-
     delete: async (warehouse_id) => {
         const res = await axiosClient.delete(`${url}${warehouse_id}`);
+        return res.data;
+    },
+    getAllReceipt: async () => {
+        const res = await axiosClient.get(`${url}receipt/all`);
+        return res.data;
+    },
+    receipt: async (receipt) => {
+        const res = await axiosClient.post(`${url}receipt`, JSON.stringify(receipt));
         return res.data;
     },
 };

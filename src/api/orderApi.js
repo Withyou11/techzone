@@ -1,14 +1,17 @@
 import axiosClient from './axiosClient';
 
-const url = '/order/';
+const url = '/orders/';
 const orderApi = {
     getAll: async () => {
         const res = await axiosClient.get(url);
         return res.data;
     },
-
+    updateStatus: async (order_id, status) => {
+        const res = await axiosClient.post(`${url}update-status/${order_id}`, status);
+        return res.data;
+    },
     getPage: async (page) => {
-        const res = await axiosClient.get(`/order?page=${page}`);
+        const res = await axiosClient.get(`/orders?page=${page}`);
         return res.data;
     },
     getById: async (order_id) => {
@@ -28,6 +31,14 @@ const orderApi = {
 
     delete: async (order_id) => {
         const res = await axiosClient.delete(`${url}${order_id}`);
+        return res.data;
+    },
+    search: async (keyword, page) => {
+        const res = await axiosClient.get(`${url}order/search?keyword=` + keyword + '&page=' + page);
+        return res.data;
+    },
+    status: async (status, page) => {
+        const res = await axiosClient.get(`${url}order/status/` + status + '?page=' + page);
         return res.data;
     },
 };

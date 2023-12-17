@@ -10,15 +10,29 @@ function Review() {
     const [take, setTake] = useState(10);
     const [data, setData] = useState([]);
     const [filter, setFilter] = useState('');
-    const [page, setPage] = useState(1);
     const [message, setMessage] = useState('');
+    const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
 
+    async function getReviewData() {
+        try {
+            let list = await reviewApi.getPage(page + 1);
+            if (list.success) {
+                setData([...data, ...list.data]);
+                setPage(page + 1);
+            }
+        } catch (ex) {}
+    }
+    const loadMore = async () => {
+        await getReviewData();
+    };
     useEffect(() => {
         async function productData() {
             try {
                 let list = await reviewApi.getPage(page);
                 if (list.success) {
                     setData(list.data);
+                    setLastPage(list.pagination.last_page);
                 }
             } catch (ex) {}
         }
@@ -116,9 +130,17 @@ function Review() {
                         })}
                     </tbody>
                 </table>
-                <div ref={loadingRef} className={cx('opacity-0')}>
-                    ...
-                </div>
+                {page < lastPage ? (
+                    <div
+                        ref={loadingRef}
+                        className={cx('opacity-100', 'text-center', 'mt-4')}
+                        onClick={(e) => loadMore()}
+                    >
+                        Load more
+                    </div>
+                ) : (
+                    ''
+                )}
             </div>
         </div>
     );

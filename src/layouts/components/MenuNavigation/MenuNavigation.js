@@ -1,4 +1,12 @@
-import { faDashboard, faDollar, faInbox, faLaptop, faPhone, faWarehouse } from '@fortawesome/free-solid-svg-icons';
+import {
+    faDashboard,
+    faDollar,
+    faInbox,
+    faLaptop,
+    faPhone,
+    faTicket,
+    faWarehouse,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import './MenuNavigation.modules.scss';
@@ -72,14 +80,29 @@ function MenuNavigation() {
                             },
                             {
                                 title: 'Track Order',
-                                itemId: '/admin/trackorder',
+                                itemId: '/admin/order-tracker',
                             },
                         ],
                     },
                     {
                         title: 'Warehouse',
-                        itemId: '/admin/warehouse',
+                        itemId: '#warehouse',
                         elemBefore: () => <FontAwesomeIcon icon={faWarehouse} className={'icon'} />,
+                        subNav: [
+                            {
+                                title: 'Warehouse List',
+                                itemId: '/admin/warehouse',
+                            },
+                            {
+                                title: 'Receipt',
+                                itemId: '/admin/receipt',
+                            },
+                        ],
+                    },
+                    {
+                        title: 'Discount',
+                        itemId: '/admin/discounts',
+                        elemBefore: () => <FontAwesomeIcon icon={faTicket} className={'icon'} />,
                     },
                 ]}
             />

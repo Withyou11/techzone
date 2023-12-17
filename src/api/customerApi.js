@@ -10,6 +10,10 @@ const customerApi = {
         const res = await axiosClient.get('/customers?page=' + page);
         return res.data;
     },
+    getOrders: async (customer_id) => {
+        const res = await axiosClient.get(`${url}${customer_id}/orders`);
+        return res.data;
+    },
 
     getById: async (customer_id) => {
         const res = await axiosClient.get(`${url}${customer_id}`);

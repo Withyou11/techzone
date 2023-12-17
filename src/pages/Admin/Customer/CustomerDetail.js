@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faFilter } from '@fortawesome/free-solid-svg-icons';
 import products from '~/Statics/products';
 import { Card, Dropdown, Form } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import customerApi from '~/api/customerApi';
 import axios from 'axios';
@@ -13,6 +13,7 @@ function CustomerDetail() {
     const cx = classNames.bind(styles);
     const { id } = useParams();
     const [item, setItem] = useState({});
+    const [recentOrder, setRecentOrder] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
@@ -20,6 +21,13 @@ function CustomerDetail() {
                 let list = await customerApi.getById(id);
                 if (list.success) {
                     setItem(list.data);
+                    console.log(list.data);
+                }
+
+                let list2 = await customerApi.getOrders(id);
+                if (list2.success) {
+                    setRecentOrder(list2.data);
+                    console.log(list2.data);
                 }
             } catch (ex) {}
         }
@@ -89,7 +97,33 @@ function CustomerDetail() {
                                 <Card.Header className={cx('card-header-style')}>
                                     <h3 className={cx('h2', 'fw-bold')}>Recent Order</h3>
                                 </Card.Header>
-                                <Card.Body className={cx('a')}></Card.Body>
+                                <Card.Body className={cx('p-0')}>
+                                    <table className={cx('sa-table', 'table', 'text-nowrap', 'm-0')} width="100%">
+                                        <tbody className={cx('p-0')}>
+                                            {recentOrder.map((value, index) => {
+                                                return (
+                                                    <tr className={cx('border-0')}>
+                                                        <td className={cx('d-flex', 'overflow-hidden')}>
+                                                            <div className={cx('vertical-middle')}>
+                                                                <Link to={`/admin/orders/${value.order_id}`}>
+                                                                    #{value.order_id}
+                                                                </Link>
+                                                            </div>
+                                                        </td>
+                                                        <td>{value.date}</td>
+                                                        <td style={{ minWidth: 40 }}>{value.status}</td>
+                                                        <td style={{ textAlign: 'end', paddingRight: '20px' }}>
+                                                            <div>
+                                                                <strong>$</strong>
+                                                                {value.total_price}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </Card.Body>
                             </Card>
                         </div>
                         <div className={cx('col-lg-4')}>

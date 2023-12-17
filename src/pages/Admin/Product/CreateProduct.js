@@ -8,6 +8,7 @@ import { NotificationManager } from 'react-notifications';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faSubtract } from '@fortawesome/free-solid-svg-icons';
+import CloudinaryUploadWidget from '~/components/CloudinaryUploadWidget/CloudinaryUploadWidget';
 
 function CreateProduct() {
     const cx = classNames.bind(styles);
@@ -20,7 +21,7 @@ function CreateProduct() {
     const [price, setPrice] = useState(0);
     const [amount, setAmount] = useState(0);
     const [previewImage, setPreviewImage] = useState(null);
-
+    const [selectedImages, setSelectedImages] = useState([]);
     const [specification, setSpecification] = useState([]);
     const [highlight, setHighlight] = useState([]);
 
@@ -74,12 +75,13 @@ function CreateProduct() {
             form.append('description', desc);
             form.append('price', price);
             form.append('amount', amount);
-            form.append('image', selectedFile);
+            form.append('image', selectedImages[0]);
             form.append('rating_average', 0);
             form.append('specifications', JSON.stringify(specificationObject));
             form.append('highlight', JSON.stringify(highlightObject));
             form.append('created_at', Date.now());
             form.append('update_at', Date.now());
+            form.append('detail_images', JSON.stringify(selectedImages));
 
             var result = await productApi.create(form);
 
@@ -298,26 +300,30 @@ function CreateProduct() {
                                 <Card.Header className={cx('card-header-style')}>
                                     <h3 className={cx('h2', 'fw-bold')}>Image</h3>
                                 </Card.Header>
+                                <Card.Body>
+                                    <CloudinaryUploadWidget
+                                        uwConfig={{
+                                            cloudName: 'df7ziv4hz',
+                                            uploadPreset: 'h8r2lchy',
+                                        }}
+                                        setPublicId={setSelectedImages}
+                                    />
+                                </Card.Body>
                                 <Card.Body className={cx('p-4', 'mb-3')}>
                                     <div>
-                                        <label for="files" className={cx('btn', 'btn-dark', 'btn-custom')}>
-                                            Select Image
-                                        </label>
-                                        <input
-                                            class="d-none"
-                                            type="file"
-                                            accept=".jpg, .png, .jpeg"
-                                            multiple
-                                            title="search image"
-                                            id="files"
-                                            name="files"
-                                            onChange={handleLoadImage}
-                                        />
-                                    </div>
-                                    <div>
-                                        {selectedFile !== null && (
-                                            <img src={previewImage} id="img" alt="user" className={cx('w-100')} />
-                                        )}
+                                        {selectedImages.map((image, index) => (
+                                            <img
+                                                key={index}
+                                                src={image}
+                                                alt={`Selected ${index}`}
+                                                style={{
+                                                    maxWidth: '100%',
+                                                    maxHeight: '150px',
+                                                    marginRight: '10px',
+                                                    marginBottom: '10px',
+                                                }}
+                                            />
+                                        ))}
                                     </div>
                                 </Card.Body>
                             </Card>

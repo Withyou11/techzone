@@ -1,95 +1,161 @@
 import styles from './DetailWarehouse.module.scss';
 import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faFilter } from '@fortawesome/free-solid-svg-icons';
-import products from '~/Statics/products';
 import { Card, Dropdown, Form } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import axiosClient from '~/api/axiosClient';
 import categoryApi from '~/api/categoryApi';
+import productApi from '~/api/productApi';
+import { NotificationManager } from 'react-notifications';
+import warehouseApi from '~/api/warehouseApi';
+import { useNavigate, useParams } from 'react-router-dom';
+import Select from 'react-select';
+import employeeApi from '~/api/employeeApi';
+import ConfirmDialog from '~/components/Dialog/ConfirmDialog';
+import { Cloudinary } from '@cloudinary/url-gen';
+import CloudinaryUploadWidget from '~/components/CloudinaryUploadWidget/CloudinaryUploadWidget';
 
 function DetailWarehouse() {
     const cx = classNames.bind(styles);
     const { id } = useParams();
-    const [item, setItem] = useState(null);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
-    const [categoriesL, setCategoriesL] = useState([]);
-    const [desc, setDesc] = useState('');
-    const [price, setPrice] = useState(0);
-    const [amount, setAmount] = useState(0);
-    const [previewImage, setPreviewImage] = useState(null);
+    const navigate = useNavigate();
+
+    const [selectedFile, setSelectedFile] = useState([]);
+    const [previewImage, setPreviewImage] = useState([]);
+    const [whCode, setWhCode] = useState('');
+    const [whDesc, setWhDesc] = useState('');
+    const [whEmpl, setWhEmpl] = useState('');
+    const [country, setContry] = useState('');
+    const [city, setCity] = useState('');
+    const [district, setDistrict] = useState('');
+    const [address, setAddress] = useState('');
+    const [employees, setEmployees] = useState([]);
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
+
+    const [selectedImages, setSelectedImages] = useState([]);
+
+    const handleImageChange = (event) => {
+        const files = event.target.files;
+
+        if (files) {
+            const imagesArray = Array.from(files).map((file) => {
+                const reader = new FileReader();
+
+                return new Promise((resolve) => {
+                    reader.onloadend = () => {
+                        resolve(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(imagesArray).then((imagesData) => {
+                setSelectedImages((prevImages) => [...imagesData]);
+                console.log(selectedImages);
+            });
+        }
+    };
+    const handleLoadImage = (event) => {
+        const files = event.target.files;
+        const arrFiles = Object.keys(files).map((key) => ({ key, value: files[key] }));
+        setSelectedFile([]);
+        setPreviewImage([]);
+    };
 
     useEffect(() => {
-        axiosClient.get('http://localhost:8000/api/products/' + id).then((res) => {
-            if (res.status === 200) {
-                let resData = res.data;
-                if (resData.success) {
-                    let product = resData.data;
-                    setItem(product);
-                    setName(product.name);
-                    setCategory(product.category_id);
-                    setDesc(product.description);
-                    setPrice(product.price);
-                    setAmount(product.amount);
-                    setPreviewImage(product.image);
-                }
-            }
-        });
-
-        async function fetchData() {
-            let list = await categoryApi.getAll();
+        async function getEmployees() {
+            let list = await employeeApi.getAll();
             if (list.success) {
-                setCategoriesL(list.data);
+                const data = list.data;
+                const dataCus = data.map(function (item) {
+                    return {
+                        value: item.employee_id,
+                        label: item.name,
+                    };
+                });
+                setEmployees(dataCus);
+            }
+        }
+        async function fetchData() {
+            let list = await warehouseApi.getById(id);
+            if (list.success) {
+                const data = list.data;
+                setWhCode(data.warehouse_name);
+                setWhDesc(data.description);
+                setWhEmpl({
+                    value: data.employee_id,
+                    label: data.employee.name,
+                });
+                setContry(data.location.country);
+                setCity(data.location.city);
+                setDistrict(data.location.district);
+                setAddress(data.location.address);
+                setSelectedImages([data.image]);
             }
         }
 
         fetchData();
+        getEmployees();
     }, []);
+    const onDelete = async (id) => {
+        setIsOpenDialog(false);
 
+        try {
+            let result = await warehouseApi.delete(id);
+            if (result.success) {
+                NotificationManager.success('Delete the warehouse successfully', 'Success');
+                navigate('/admin/warehouse');
+            } else {
+                NotificationManager.error('Delete the warehouse failed', 'Error');
+            }
+        } catch (ex) {
+            NotificationManager.error('Delete the warehouse failed', 'Error');
+            console.log(ex);
+        }
+    };
+    const handleDelete = async (id) => {
+        setIsOpenDialog(true);
+        setDeleteId(id);
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.put(
-            'http://localhost:8000/products/' + id,
-            JSON.stringify(
-                {
-                    name: name,
-                    price: price,
-                    description: desc,
-                    amount: amount,
-                },
-                {
-                    headers: {},
-                },
-            ),
-        );
+
         try {
+            const result = await warehouseApi.update(id, {
+                warehouse_name: whCode,
+                description: whDesc,
+                location: {
+                    address: address,
+                    district: district,
+                    city: city,
+                    country: country,
+                },
+                employee_id: whEmpl.value,
+                image: selectedImages[0],
+            });
+
+            if (result.success) {
+                NotificationManager.success('Update warehouse successfully');
+            } else {
+                NotificationManager.error('Error update warehouse');
+            }
         } catch (error) {
-            console.error('Error updating product:', error);
+            console.error('Update warehouse:', error);
+            NotificationManager.error('Error update warehouse');
         }
     };
 
-    const handleLoadImage = (event) => {
-        const file = event.target.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedFile(file);
-                setPreviewImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    return item != null ? (
+    return (
         <div className={cx('main-container')}>
+            <ConfirmDialog
+                isOpenDialog={isOpenDialog}
+                setIsOpenDialog={setIsOpenDialog}
+                question={'Do you want to delete it?'}
+                action={onDelete}
+                id={deleteId}
+            />
             <div className={cx('header')}>
                 <div>
-                    <h6 className={cx('title')}>Edit Product</h6>
+                    <h6 className={cx('title')}>Edit Warehouse</h6>
                 </div>
             </div>
             <div className={cx('content')}>
@@ -98,73 +164,99 @@ function DetailWarehouse() {
                         <div className={cx('me-lg-4', 'col-lg-8')}>
                             <Card className={cx('col-12', 'mb-5')}>
                                 <Card.Header className={cx('card-header-style')}>
-                                    <h3 className={cx('h2', 'fw-bold')}>Overview information </h3>
+                                    <h3 className={cx('h2', 'fw-bold')}>Information </h3>
                                 </Card.Header>
                                 <Card.Body className={cx('a')}>
                                     <div className={cx('form-group', 'mb-3', 'col-12')}>
-                                        <label className={cx('form-control-label', 'h4')}>Name</label>
+                                        <label className={cx('form-control-label', 'h4')}>WAREHOUSE CODE</label>
                                         <div className={cx('me-2')}>
                                             <Form.Control
                                                 className={cx('text-large')}
-                                                value={name}
                                                 type="text"
-                                                onChange={(e) => setName(e.target.value)}
+                                                value={whCode}
+                                                onChange={(e) => setWhCode(e.target.value)}
                                             />
                                         </div>
                                     </div>
 
                                     <div className={cx('form-group', 'mb-3', 'col-12')}>
-                                        <label className={cx('form-control-label', 'h4')}>Category</label>
+                                        <label className={cx('form-control-label', 'h4')}>DESCRIPTION</label>
                                         <div className={cx('me-2')}>
-                                            <Form.Select
-                                                className={cx('text-large')}
-                                                aria-label="Default select example"
-                                                value={category}
-                                            >
-                                                <option>Open this select category</option>
-                                                {categoriesL.map((item) => (
-                                                    <option value={item.category_id}>{item.name}</option>
-                                                ))}
-                                            </Form.Select>
-                                        </div>
-                                    </div>
-                                    <div className={cx('form-group', 'mb-3')}>
-                                        <label className={cx('form-control-label', 'h4')}>
-                                            The description of product
-                                        </label>
-                                        <div className={'me-2'}>
                                             <Form.Control
                                                 className={cx('text-large')}
-                                                as="textarea"
-                                                value={desc}
-                                                rows={6}
                                                 type="text"
-                                                onChange={(e) => setDesc(e.target.value)}
+                                                value={whDesc}
+                                                onChange={(e) => setWhDesc(e.target.value)}
                                             />
                                         </div>
                                     </div>
-                                    <div className={cx('form-group', 'mb-3', 'd-md-flex')}>
-                                        <div className={cx('mb-3', 'col-md-6 ', 'col-12')}>
-                                            <label className={cx('form-control-label', 'h4')}>Amount</label>
-                                            <div className={'me-2'}>
-                                                <Form.Control
-                                                    className={cx('text-large')}
-                                                    type="number"
-                                                    value={amount}
-                                                    onChange={(e) => setAmount(e.target.value)}
-                                                />
+                                    <div className={cx('form-group', 'mb-3')}>
+                                        <label className={cx('form-control-label', 'h4')}>LOCATION</label>
+                                        <div className={'me-2'}>
+                                            <div className={cx('mb-3', 'col-12')}>
+                                                <label className={cx('form-control-label', 'h5')}>Country</label>
+                                                <div className={cx('me-2')}>
+                                                    <Form.Control
+                                                        className={cx('text-large')}
+                                                        type="text"
+                                                        value={country}
+                                                        onChange={(e) => setContry(e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className={cx('mb-3', 'col-12')}>
+                                                <label className={cx('form-control-label', 'h5')}>
+                                                    City/Provinces/State
+                                                </label>
+                                                <div className={cx('me-2')}>
+                                                    <Form.Control
+                                                        className={cx('text-large')}
+                                                        type="text"
+                                                        value={city}
+                                                        onChange={(e) => setCity(e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className={cx('mb-3', 'col-12')}>
+                                                <label className={cx('form-control-label', 'h5')}>
+                                                    County/District
+                                                </label>
+                                                <div className={cx('me-2')}>
+                                                    <Form.Control
+                                                        className={cx('text-large')}
+                                                        type="text"
+                                                        value={district}
+                                                        onChange={(e) => setDistrict(e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className={cx('mb-3', 'col-12')}>
+                                                <label className={cx('form-control-label', 'h5')}>Local Address</label>
+                                                <div className={cx('me-2')}>
+                                                    <Form.Control
+                                                        className={cx('text-large')}
+                                                        type="text"
+                                                        value={address}
+                                                        onChange={(e) => setAddress(e.target.value)}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className={cx('mb-3', 'col-md-6', 'col-12')}>
-                                            <label className={cx('form-control-label', 'h4')}>Price</label>
-                                            <div className={'me-2'}>
-                                                <Form.Control
-                                                    className={cx('text-large')}
-                                                    type="number"
-                                                    value={price}
-                                                    onChange={(e) => setPrice(e.target.value)}
-                                                />
-                                            </div>
+                                    </div>
+                                    <div className={cx('form-group', 'mb-3', 'col-12')}>
+                                        <label className={cx('form-control-label', 'h4')}>MANAGER</label>
+                                        <div className={cx('me-2')}>
+                                            <Select
+                                                required
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                name="color"
+                                                options={employees}
+                                                value={whEmpl}
+                                                onChange={(value) => {
+                                                    setWhEmpl(value);
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                 </Card.Body>
@@ -175,38 +267,30 @@ function DetailWarehouse() {
                                 <Card.Header className={cx('card-header-style')}>
                                     <h3 className={cx('h2', 'fw-bold')}>Image</h3>
                                 </Card.Header>
+                                <Card.Body>
+                                    <CloudinaryUploadWidget
+                                        uwConfig={{
+                                            cloudName: 'df7ziv4hz',
+                                            uploadPreset: 'h8r2lchy',
+                                        }}
+                                        setPublicId={setSelectedImages}
+                                    />
+                                </Card.Body>
                                 <Card.Body className={cx('p-4', 'mb-3')}>
                                     <div>
-                                        <label for="files" className={cx('btn', 'btn-dark', 'btn-custom')}>
-                                            Select Image
-                                        </label>
-                                        <input
-                                            class="d-none"
-                                            type="file"
-                                            accept=".jpg, .png, .jpeg"
-                                            multiple
-                                            title="search image"
-                                            id="files"
-                                            name="files"
-                                            onChange={handleLoadImage}
-                                        />
-                                    </div>
-                                    <div>
-                                        {selectedFile !== null ? (
+                                        {selectedImages.map((image, index) => (
                                             <img
-                                                src={previewImage}
-                                                id="img"
-                                                alt="user"
-                                                className={cx('w-100', 'mt-4')}
+                                                key={index}
+                                                src={image}
+                                                alt={`Selected ${index}`}
+                                                style={{
+                                                    maxWidth: '100%',
+                                                    maxHeight: '150px',
+                                                    marginRight: '10px',
+                                                    marginBottom: '10px',
+                                                }}
                                             />
-                                        ) : (
-                                            <img
-                                                src={previewImage}
-                                                id="img"
-                                                alt="user"
-                                                className={cx('w-100', 'mt-4')}
-                                            />
-                                        )}
+                                        ))}
                                     </div>
                                 </Card.Body>
                             </Card>
@@ -217,22 +301,39 @@ function DetailWarehouse() {
                         <div class={cx('col-md-offset-2', 'mb-3')}>
                             <input
                                 type="submit"
+                                onClick={handleSubmit}
                                 value="Save"
                                 class={cx(
                                     'btn',
-                                    'btn-warning',
+                                    'btn-dark',
+                                    'opacity-75',
                                     'text-white',
                                     'text-center',
                                     'border-0',
                                     'me-2',
                                     'btn-custom',
                                 )}
-                                onClick={handleSubmit}
+                            />
+                        </div>
+                        <div class={cx('col-md-offset-2', 'mb-3')}>
+                            <input
+                                type="button"
+                                value="Delete"
+                                class={cx(
+                                    'btn',
+                                    'btn-danger',
+                                    'text-white',
+                                    'text-center',
+                                    'border-0',
+                                    'me-2',
+                                    'btn-custom',
+                                )}
+                                onClick={(e) => handleDelete(id)}
                             />
                         </div>
                         <div>
                             <a
-                                href="/admin/products"
+                                href="/admin/warehouse"
                                 class={cx(
                                     'btn',
                                     'btn-secondary',
@@ -250,8 +351,6 @@ function DetailWarehouse() {
                 </div>
             </div>
         </div>
-    ) : (
-        ''
     );
 }
 

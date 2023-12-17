@@ -32,13 +32,6 @@
                 width: 300px;
                 flex-shrink: 0;
             }
-            .btn-filter.selected {
-                background-color: #e50000;
-                .filter-text {
-                    color: white;
-                }
-            }
-
             .btn-filter {
                 width: 100px;
                 border-radius: 7px;
@@ -51,7 +44,7 @@
                 cursor: pointer;
                 .filter-text {
                     font-size: 1em;
-                    margin: 6px 0px 6px 0px;
+                    margin: 6px 0px 6px 8px;
                 }
             }
             .btn-add-new {
@@ -110,54 +103,26 @@
         }
     }
 }
-
-@media (max-width: 1024px) {
-    .main-container {
-        .header {
-            display: block;
-
-            .header-right {
-                margin-top: 10px;
-            }
-        }
-        .content {
-            .statistics {
-                display: block;
-
-                .statistic-linear {
-                    width: 100%;
-                }
-
-                .statistic-doughnut {
-                    width: 100%;
-                    margin-left: 0px;
-                    margin-top: 10px;
-                }
-            }
-            .trending {
-                display: block;
-
-                .latest_order {
-                    width: 100%;
-                }
-
-                .top_selling {
-                    width: 100%;
-                    margin-left: 0;
-                    margin-top: 10px;
-                }
-            }
-        }
-    }
+.card-header-style {
+    padding: 14px 20px;
+    color: #fff;
+    background-color: #000;
 }
-@media (max-width: 900px) {
-    .main-container {
-        .content {
-            .figure {
-                .figure-item {
-                    width: 100%;
-                }
-            }
-        }
-    }
+.text-large {
+    font-size: 0.9em !important;
+    padding: 10px 20px;
+}
+.form-create {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.form-create-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000067;
 }

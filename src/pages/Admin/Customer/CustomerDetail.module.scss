@@ -37,3 +37,17 @@
     font-size: 0.9em;
     padding: 8px 12px;
 }
+
+.vertical-middle {
+    line-height: 60px;
+    vertical-align: middle;
+    max-width: 400px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+.table > :not(caption) > * > * {
+    border: none;
+}

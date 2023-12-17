@@ -33,7 +33,7 @@ axiosClient.interceptors.response.use(
                 originalConfig._retry = true;
 
                 try {
-                    const rs = await axiosClient.post('/auth/refreshtoken', {
+                    const rs = await axiosClient.post('/auth/refresh', {
                         refreshToken: localStorage.getItem('refreshToken'),
                     });
 

@@ -32,13 +32,6 @@
                 width: 300px;
                 flex-shrink: 0;
             }
-            .btn-filter.selected {
-                background-color: #e50000;
-                .filter-text {
-                    color: white;
-                }
-            }
-
             .btn-filter {
                 width: 100px;
                 border-radius: 7px;
@@ -51,7 +44,7 @@
                 cursor: pointer;
                 .filter-text {
                     font-size: 1em;
-                    margin: 6px 0px 6px 0px;
+                    margin: 6px 0px 6px 8px;
                 }
             }
             .btn-add-new {

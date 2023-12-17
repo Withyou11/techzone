@@ -1,62 +1,125 @@
-import styles from './CreateWarehouse.module.scss';
+import styles from './DetailWarehouse.module.scss';
 import classNames from 'classnames/bind';
 import { Card, Dropdown, Form } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import categoryApi from '~/api/categoryApi';
 import productApi from '~/api/productApi';
 import { NotificationManager } from 'react-notifications';
+import warehouseApi from '~/api/warehouseApi';
+import { useNavigate, useParams } from 'react-router-dom';
+import Select from 'react-select';
+import employeeApi from '~/api/employeeApi';
+import ConfirmDialog from '~/components/Dialog/ConfirmDialog';
+import { Cloudinary } from '@cloudinary/url-gen';
+import CloudinaryUploadWidget from '~/components/CloudinaryUploadWidget/CloudinaryUploadWidget';
 
 function CreateWarehouse() {
     const cx = classNames.bind(styles);
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
-    const [categoriesL, setCategoriesL] = useState([]);
-    const [desc, setDesc] = useState('');
-    const [price, setPrice] = useState(0);
-    const [amount, setAmount] = useState(0);
-    const [previewImage, setPreviewImage] = useState(null);
+    const [selectedFile, setSelectedFile] = useState([]);
+    const [previewImage, setPreviewImage] = useState([]);
+    const [whCode, setWhCode] = useState('');
+    const [whDesc, setWhDesc] = useState('');
+    const [whEmpl, setWhEmpl] = useState('');
+    const [country, setContry] = useState('');
+    const [city, setCity] = useState('');
+    const [district, setDistrict] = useState('');
+    const [address, setAddress] = useState('');
+    const [employees, setEmployees] = useState([]);
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
 
-    const handleLoadImage = (event) => {
-        const file = event.target.files[0];
+    const [selectedImages, setSelectedImages] = useState([]);
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedFile(file);
-                setPreviewImage(reader.result);
-            };
-            reader.readAsDataURL(file);
+    const handleImageChange = (event) => {
+        const files = event.target.files;
+        if (files) {
+            const imagesArray = Array.from(files).map((file) => {
+                const reader = new FileReader();
+
+                return new Promise((resolve) => {
+                    reader.onloadend = () => {
+                        resolve(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(imagesArray).then((imagesData) => {
+                setSelectedImages((prevImages) => [...imagesData]);
+                console.log(selectedImages);
+            });
         }
+    };
+    const handleLoadImage = (event) => {
+        const files = event.target.files;
+        const arrFiles = Object.keys(files).map((key) => ({ key, value: files[key] }));
+        setSelectedFile([]);
+        setPreviewImage([]);
     };
 
     useEffect(() => {
-        async function fetchData() {
-            let list = await categoryApi.getAll();
+        async function getEmployees() {
+            let list = await employeeApi.getAll();
             if (list.success) {
-                setCategoriesL(list.data);
+                const data = list.data;
+                const dataCus = data.map(function (item) {
+                    return {
+                        value: item.employee_id,
+                        label: item.name,
+                    };
+                });
+                setEmployees(dataCus);
             }
         }
 
-        fetchData();
+        getEmployees();
     }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            productApi.create({
-                name: name,
-                category_id: category,
-                description: desc,
-                price: price,
-                amount: amount,
-                image: selectedFile,
+            console.log(
+                JSON.stringify({
+                    warehouse_name: whCode,
+                    description: whDesc,
+                    location: {
+                        address: address,
+                        district: district,
+                        city: city,
+                        country: country,
+                    },
+                    employee_id: whEmpl.value,
+                    image: selectedImages[0],
+                    warehouse_details: [],
+                }),
+            );
+
+            const result = await warehouseApi.create({
+                warehouse_name: whCode,
+                description: whDesc,
+                location: {
+                    country: country,
+                    city: city,
+                    district: district,
+                    address: address,
+                },
+                employee_id: whEmpl.value,
+                image: selectedImages[0],
+                warehouse_details: [],
             });
+
+            if (result.success) {
+                NotificationManager.success('Create warehouse successfully');
+            } else {
+                NotificationManager.error('Error Create warehouse');
+            }
         } catch (error) {
-            console.error('Error create product:', error);
-            NotificationManager.error('Error create product');
+            console.error('Create warehouse:', error);
+            NotificationManager.error('Error Create warehouse');
         }
     };
 
@@ -79,14 +142,24 @@ function CreateWarehouse() {
                                     <div className={cx('form-group', 'mb-3', 'col-12')}>
                                         <label className={cx('form-control-label', 'h4')}>WAREHOUSE CODE</label>
                                         <div className={cx('me-2')}>
-                                            <Form.Control className={cx('text-large')} type="text" />
+                                            <Form.Control
+                                                className={cx('text-large')}
+                                                type="text"
+                                                value={whCode}
+                                                onChange={(e) => setWhCode(e.target.value)}
+                                            />
                                         </div>
                                     </div>
 
                                     <div className={cx('form-group', 'mb-3', 'col-12')}>
                                         <label className={cx('form-control-label', 'h4')}>DESCRIPTION</label>
                                         <div className={cx('me-2')}>
-                                            <Form.Control className={cx('text-large')} type="text" />
+                                            <Form.Control
+                                                className={cx('text-large')}
+                                                type="text"
+                                                value={whDesc}
+                                                onChange={(e) => setWhDesc(e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                     <div className={cx('form-group', 'mb-3')}>
@@ -95,7 +168,12 @@ function CreateWarehouse() {
                                             <div className={cx('mb-3', 'col-12')}>
                                                 <label className={cx('form-control-label', 'h5')}>Country</label>
                                                 <div className={cx('me-2')}>
-                                                    <Form.Control className={cx('text-large')} type="text" />
+                                                    <Form.Control
+                                                        className={cx('text-large')}
+                                                        type="text"
+                                                        value={country}
+                                                        onChange={(e) => setContry(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className={cx('mb-3', 'col-12')}>
@@ -103,7 +181,12 @@ function CreateWarehouse() {
                                                     City/Provinces/State
                                                 </label>
                                                 <div className={cx('me-2')}>
-                                                    <Form.Control className={cx('text-large')} type="text" />
+                                                    <Form.Control
+                                                        className={cx('text-large')}
+                                                        type="text"
+                                                        value={city}
+                                                        onChange={(e) => setCity(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className={cx('mb-3', 'col-12')}>
@@ -111,15 +194,41 @@ function CreateWarehouse() {
                                                     County/District
                                                 </label>
                                                 <div className={cx('me-2')}>
-                                                    <Form.Control className={cx('text-large')} type="text" />
+                                                    <Form.Control
+                                                        className={cx('text-large')}
+                                                        type="text"
+                                                        value={district}
+                                                        onChange={(e) => setDistrict(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className={cx('mb-3', 'col-12')}>
                                                 <label className={cx('form-control-label', 'h5')}>Local Address</label>
                                                 <div className={cx('me-2')}>
-                                                    <Form.Control className={cx('text-large')} type="text" />
+                                                    <Form.Control
+                                                        className={cx('text-large')}
+                                                        type="text"
+                                                        value={address}
+                                                        onChange={(e) => setAddress(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div className={cx('form-group', 'mb-3', 'col-12')}>
+                                        <label className={cx('form-control-label', 'h4')}>MANAGER</label>
+                                        <div className={cx('me-2')}>
+                                            <Select
+                                                required
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                name="color"
+                                                options={employees}
+                                                value={whEmpl}
+                                                onChange={(value) => {
+                                                    setWhEmpl(value);
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                 </Card.Body>
@@ -130,8 +239,17 @@ function CreateWarehouse() {
                                 <Card.Header className={cx('card-header-style')}>
                                     <h3 className={cx('h2', 'fw-bold')}>Image</h3>
                                 </Card.Header>
+                                <Card.Body>
+                                    <CloudinaryUploadWidget
+                                        uwConfig={{
+                                            cloudName: 'df7ziv4hz',
+                                            uploadPreset: 'h8r2lchy',
+                                        }}
+                                        setPublicId={setSelectedImages}
+                                    />
+                                </Card.Body>
                                 <Card.Body className={cx('p-4', 'mb-3')}>
-                                    <div>
+                                    {/* <div>
                                         <label for="files" className={cx('btn', 'btn-dark', 'btn-custom')}>
                                             Select Image
                                         </label>
@@ -143,13 +261,27 @@ function CreateWarehouse() {
                                             title="search image"
                                             id="files"
                                             name="files"
-                                            onChange={handleLoadImage}
+                                            onChange={handleImageChange}
                                         />
-                                    </div>
+                                    </div> */}
                                     <div>
-                                        {selectedFile !== null && (
-                                            <img src={previewImage} id="img" alt="user" className={cx('w-100')} />
-                                        )}
+                                        {/* {selectedFile !== null &&
+                                            previewImage.map((value) => {
+                                                <img src={value} id="img" alt="user" className={cx('w-100')} />;
+                                            })} */}
+                                        {selectedImages.map((image, index) => (
+                                            <img
+                                                key={index}
+                                                src={image}
+                                                alt={`Selected ${index}`}
+                                                style={{
+                                                    maxWidth: '100%',
+                                                    maxHeight: '150px',
+                                                    marginRight: '10px',
+                                                    marginBottom: '10px',
+                                                }}
+                                            />
+                                        ))}
                                     </div>
                                 </Card.Body>
                             </Card>
@@ -161,7 +293,7 @@ function CreateWarehouse() {
                             <input
                                 type="submit"
                                 onClick={handleSubmit}
-                                value="Create warehouse"
+                                value="Save"
                                 class={cx(
                                     'btn',
                                     'btn-dark',
@@ -174,9 +306,10 @@ function CreateWarehouse() {
                                 )}
                             />
                         </div>
+
                         <div>
                             <a
-                                href="/admin/products"
+                                href="/admin/warehouse"
                                 class={cx(
                                     'btn',
                                     'btn-secondary',

@@ -21,9 +21,35 @@ function Product() {
     const [search, setSearch] = useState('');
     const [take, setTake] = useState(10);
     const [data, setData] = useState([]);
+    const [source, setSource] = useState([]);
+
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
     const [icons, setIcons] = useState([]);
+    const [flag, setFlag] = useState(false);
+
+    async function getProductData() {
+        try {
+            let list = await productApi.getPage(page + 1);
+            if (list.success) {
+                setSource([...source, ...list.data]);
+                setPage(page + 1);
+            }
+        } catch (ex) {}
+        setFlag(false);
+    }
+    useEffect(() => {
+        console.log(filter);
+        if (filter.length === 0 && search.length === 0) {
+            setData(source);
+        } else {
+            const filterData = source
+                .filter((value, index) => value.category.name === filter || filter.length === 0)
+                .filter((value, index) => value.name.includes(search) === true);
+            setData(filterData);
+        }
+    }, [filter, source, search]);
 
     useEffect(() => {
         async function productData() {
@@ -31,8 +57,12 @@ function Product() {
                 let list = await productApi.getPage(page);
                 if (list.success) {
                     setData(list.data);
+                    setSource(list.data);
+                    setLastPage(list.pagination.last_page);
                 }
-            } catch (ex) {}
+            } catch (ex) {
+                console.log(ex);
+            }
         }
         async function fetchData() {
             try {
@@ -53,61 +83,14 @@ function Product() {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        setTake(10);
-        // const newArray = dataArray
-        //     .filter((value, index) =>
-        //         filter.length > 0 ? value.categoryName.toLowerCase() === filter.toLowerCase() : true,
-        //     )
-        //     .filter((value, index) => value.name.toLowerCase().includes(search) === true)
-        //     .slice(0, take);
-        // setData(newArray);
-    }, [filter]);
-
-    useEffect(() => {
-        // const newArray = dataArray
-        //     .filter((value, index) =>
-        //         filter.length > 0 ? value.categoryName.toLowerCase() === filter.toLowerCase() : true,
-        //     )
-        //     .filter((value, index) => value.name.toLowerCase().includes(search) === true)
-        //     .slice(0, take);
-        // setData(newArray);
-        // console.log(take);
-    }, [search, take]);
-
     const cx = classNames.bind(styles);
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
     };
-    const handleScroll = () => {
-        if (isTake) {
-            const windowHeight = window.innerHeight;
-            const totalHeight = document.documentElement.scrollHeight;
-            const scrollPosition = window.scrollY + windowHeight;
-
-            if (scrollPosition >= totalHeight) {
-                if (take < data.length) {
-                    loadingRef.current.className = classNames('text-center', 'h1', 'opacity-100');
-
-                    setTimeout(() => {
-                        setTake((pre) => pre + 10);
-                        loadingRef.current.className = classNames('text-center', 'h1', 'opacity-0');
-                    }, 1000);
-                }
-            }
-        }
+    const loadMore = async () => {
+        await getProductData();
     };
-    const isTake = () => {
-        return take < data.length;
-    };
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
-
-    //     return () => {
-    //         window.removeEventListener('scroll', handleScroll);
-    //     };
-    // }, []);
 
     return (
         <div className={cx('main-container')}>
@@ -147,7 +130,7 @@ function Product() {
                                         <img className={cx('product-img')} src={value.image} alt="img-product" />
                                         <Link to={`detail/${value.product_id}`}>{value.name}</Link>
                                     </td>
-                                    <td>{value.category.name}</td>
+                                    <td>{value && value.category.name}</td>
                                     <td>{value.amount}</td>
                                     <td>
                                         {value.amount === 0 ? (
@@ -162,9 +145,17 @@ function Product() {
                         })}
                     </tbody>
                 </table>
-                <div ref={loadingRef} className={cx('opacity-0')}>
-                    ...
-                </div>
+                {page < lastPage ? (
+                    <div
+                        ref={loadingRef}
+                        className={cx('opacity-100', 'text-center', 'mt-4')}
+                        onClick={(e) => loadMore()}
+                    >
+                        Load more
+                    </div>
+                ) : (
+                    ''
+                )}
             </div>
         </div>
     );
