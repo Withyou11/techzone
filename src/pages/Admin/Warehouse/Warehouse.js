@@ -38,7 +38,7 @@ function Warehouse() {
                     <h6 className={cx('title')}>Warehouses</h6>
                 </div>
                 <div className={cx('header-right')}>
-                    <input type="text" className={cx('filter')} onChange={(e) => handleSearch(e)} />
+                    {/* <input type="text" className={cx('filter')} onChange={(e) => handleSearch(e)} /> */}
 
                     <Link to="/admin/warehouse/create" className={cx('btn-add-new')}>
                         <FontAwesomeIcon icon={faAdd} className={cx('icon')} />

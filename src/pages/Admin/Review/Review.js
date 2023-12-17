@@ -79,9 +79,9 @@ function Review() {
                 <div>
                     <h6 className={cx('title')}>Reviews</h6>
                 </div>
-                <div className={cx('header-right')}>
+                {/* <div className={cx('header-right')}>
                     <input type="text" className={cx('filter')} onChange={(e) => handleSearch(e)} />
-                </div>
+                </div> */}
             </div>
             <div className={cx('content')}>
                 <table>

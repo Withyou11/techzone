@@ -15,15 +15,29 @@ function Customer() {
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [lastPage, setLastPage] = useState(1);
+
+    const [search, setSearch] = useState('');
+    const [source, setSource] = useState([]);
+
     async function getCustomerData() {
         try {
             let list = await customerApi.getPage(page + 1);
             if (list.success) {
-                setData([...data, ...list.data]);
+                setSource([...source, ...list.data]);
                 setPage(page + 1);
             }
         } catch (ex) {}
     }
+
+    useEffect(() => {
+        if (search.length === 0) {
+            setData(source);
+        } else {
+            const filterData = source.filter((value, index) => value.name.includes(search) === true);
+            setData(filterData);
+        }
+    }, [source, search]);
+
     const loadMore = async () => {
         await getCustomerData();
     };
@@ -33,6 +47,7 @@ function Customer() {
                 let list = await customerApi.getPage(page);
                 if (list.success) {
                     setData(list.data);
+                    setSource(list.data);
                     setLastPage(list.pagination.last_page);
                 }
             } catch (ex) {}
@@ -47,7 +62,12 @@ function Customer() {
                     <h6 className={cx('title')}>Customers</h6>
                 </div>
                 <div className={cx('header-right')}>
-                    <input type="text" className={cx('filter')} />
+                    <input
+                        type="text"
+                        className={cx('filter')}
+                        onChange={(e) => setSearch(e.target.value)}
+                        value={search}
+                    />
                 </div>
             </div>
             <div className={cx('content')}>
