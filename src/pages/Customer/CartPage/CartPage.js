@@ -21,7 +21,9 @@ function CartPage() {
     const cartItemsState = cartItems.cartItemsState;
     const setCartItemsState = cartItems.setCartItemsState;
     const [couponVisible, setCouponVisible] = useState(true);
-    const [discountValue, setDiscountValue] = useState(cartItemsState?.discount_value);
+    const [discountValue, setDiscountValue] = useState(
+        cartItemsState?.discount === null ? 0 : cartItemsState?.discount,
+    );
     const [couponNotify, setCouponNotify] = useState(false);
     useEffect(() => {
         if (cartItemsState?.discount_code) {
@@ -96,13 +98,13 @@ function CartPage() {
 
     // Hàm xử lý sự kiện giảm số lượng sản phẩm
     const handleDecrease = (itemId, quantity) => {
-        var form = new FormData();
-        form.append('product_id', itemId);
-        form.append('quantity', quantity);
-
+        const updateData = {
+            product_id: itemId,
+            quantity: quantity,
+        };
         async function decreaseProductInCart() {
             try {
-                let decreaseProduct = await cartApi.update(cartItemsState.cart_id, form);
+                let decreaseProduct = await cartApi.update(cartItemsState.cart_id, updateData);
             } catch (ex) {
                 alert('Cannot decrease product in cart');
             }
@@ -113,7 +115,7 @@ function CartPage() {
         const updatedCartItems = cartItemsState.cart_details?.map((item) => {
             if (item.product_id == itemId) {
                 if (item.quantity > 1) {
-                    total_price -= item.price;
+                    total_price -= item.product.price;
                     return {
                         ...item,
                         quantity: item.quantity - 1,
@@ -133,14 +135,13 @@ function CartPage() {
 
     // Hàm xử lý sự kiện tăng số lượng sản phẩm
     const handleIncrease = (itemId, quantity) => {
-        var form = new FormData();
-        form.append('product_id', itemId);
-        form.append('quantity', quantity);
-        form.append('_method', 'PUT');
+        const updateData = {
+            product_id: itemId,
+            quantity: quantity,
+        };
         async function increaseProductInCart() {
             try {
-                let increaseProduct = await cartApi.update(cartItemsState.cart_id, form);
-                console.log(increaseProduct);
+                let increaseProduct = await cartApi.update(cartItemsState.cart_id, updateData);
             } catch (ex) {
                 alert('Cannot increase product in cart');
             }
@@ -150,7 +151,7 @@ function CartPage() {
         let total_price = cartItemsState.total_price;
         const updatedCartItems = cartItemsState.cart_details?.map((item) => {
             if (item.product_id == itemId) {
-                total_price += item.price;
+                total_price += item.product.price;
                 return {
                     ...item,
                     quantity: item.quantity + 1,
@@ -174,45 +175,71 @@ function CartPage() {
 
     const handleCheck = () => {
         setCouponNotify(false);
-        const newItem = {
-            code: inputValue,
-            cart_id: cartItemsState.cart_id,
-        };
+        // const newItem = {
+        //     cart_id: cartItemsState.cart_id,
+        //     code: inputValue,
+        // };
 
-        fetch('http://localhost:3001/carts/apply_discount', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newItem),
-        })
-            .then((response) => response.json())
-            .then((responseData) => {
-                console.log(responseData);
-                if (responseData.message == 'discount applied successfully') {
-                    var discountValue = responseData.discount_value;
-                    console.log(discountValue);
-                    const updateItem = {
-                        cart_id: cartItemsState.cart_id,
-                        discount_id: cartItemsState.discount,
-                        cart_details: cartItemsState.cart_details,
-                        discount_value: responseData.discount_value,
-                        total_price: cartItemsState.total_price - discountValue,
-                    };
-                    setDiscountValue(responseData.discount_value);
-                    if (discountValue > 0) {
-                        setCartItemsState(updateItem);
-                    }
+        // var form = new FormData();
+        // form.append('discountId', inputValue)
 
-                    setCouponVisible(false);
-                } else {
-                    setCouponNotify(true);
-                }
-            })
-            .catch((error) => {
-                // Handle any errors
-                console.error(error);
-            });
+        async function applyDiscount() {
+            try {
+                let aplDiscount = await cartApi.addDiscountToCart(cartItemsState.cart_id, inputValue);
+                // var discountValue = responseData.discount_value;
+                // const updateItem = {
+                //     cart_id: cartItemsState.cart_id,
+                //     discount_id: cartItemsState.discount,
+                //     cart_details: cartItemsState.cart_details,
+                //     discount_value: responseData.discount_value,
+                //     total_price: cartItemsState.total_price - discountValue,
+                // };
+                // setDiscountValue(responseData.discount_value);
+                // if (discountValue > 0) {
+                //     setCartItemsState(updateItem);
+                // }
+                setCouponVisible(false);
+                console.log(aplDiscount);
+            } catch (ex) {
+                setCouponNotify(true);
+                console.log('Cannot apply discount');
+            }
+        }
+        applyDiscount();
+
+        // fetch('http://localhost:3001/carts/apply_discount', {
+        //     method: 'PATCH',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(newItem),
+        // })
+        //     .then((response) => response.json())
+        //     .then((responseData) => {
+        //         console.log(responseData);
+        //         if (responseData.message == 'discount applied successfully') {
+        //             var discountValue = responseData.discount_value;
+        //             console.log(discountValue);
+        //             const updateItem = {
+        //                 cart_id: cartItemsState.cart_id,
+        //                 discount_id: cartItemsState.discount,
+        //                 cart_details: cartItemsState.cart_details,
+        //                 discount_value: responseData.discount_value,
+        //                 total_price: cartItemsState.total_price - discountValue,
+        //             };
+        //             setDiscountValue(responseData.discount_value);
+        //             if (discountValue > 0) {
+        //                 setCartItemsState(updateItem);
+        //             }
+
+        //             setCouponVisible(false);
+        //         } else {
+        //             setCouponNotify(true);
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     };
 
     return (
@@ -229,17 +256,17 @@ function CartPage() {
                         />
                     </div>
                 ))}
-                {/* {cartItemsState?.cart_details.length === 0 && (
+                {cartItemsState?.cart_details?.length === 0 && (
                     <p style={{ fontSize: '18px', fontStyle: 'italic', margin: '50px' }}>
                         You have no items in your shopping cart
                     </p>
-                )} */}
+                )}
                 <div className={cx('inputContainer')}>
                     <input
                         readOnly={!couponVisible}
                         className={cx('input')}
                         type="text"
-                        value={cartItemsState.discount_code ? cartItemsState.discount_code : inputValue}
+                        value={cartItemsState.discount_id ? cartItemsState.discount_id : inputValue}
                         onChange={handleInputChange}
                         placeholder="Enter discount code (if available)"
                     />
@@ -257,11 +284,13 @@ function CartPage() {
                 <div className={cx('totalContainer')}>
                     <div className={cx('discountContainer')}>
                         <p className={cx('title')}>DISCOUNT</p>
-                        <p className={cx('content')}>${cartItemsState?.discount_value}.00</p>
+                        <p className={cx('content')}>
+                            ${cartItemsState?.discount === null ? 0 : cartItemsState?.discount}
+                        </p>
                     </div>
                     <div className={cx('discountContainer')}>
                         <p className={cx('title')}>TOTAL</p>
-                        <p className={cx('content')}>${cartItemsState?.total_price}.00</p>
+                        <p className={cx('content')}>${cartItemsState?.total_price}</p>
                     </div>
                 </div>
                 <div className={cx('nextButton')}>

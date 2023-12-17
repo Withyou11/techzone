@@ -23,7 +23,7 @@ const routes = {
     login: '/login',
     register: '/register',
     shipping: '/shipping',
-    profile: '/profile/:id',
+    profile: '/profile',
     about: '/about',
 };
 

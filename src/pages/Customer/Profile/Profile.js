@@ -4,14 +4,18 @@ import styles from './Profile.module.scss';
 import FunctionTitle from '~/components/FunctionTitle/FunctionTitle';
 import avatar from '~/assets/images/avatar.png';
 import authApi from '~/api/authApi';
+import customerApi from '~/api/customerApi';
+
 function Profile() {
     const [customerInfo, setCustomerInfo] = useState({});
-
+    const [email, setEmail] = useState();
     useEffect(() => {
         async function getProfileInfo() {
             try {
                 let profile = await authApi.profile();
+                console.log(profile.customer);
                 setCustomerInfo(profile.customer);
+                setEmail(profile.email);
             } catch (ex) {}
         }
         getProfileInfo();
@@ -68,27 +72,16 @@ function Profile() {
         };
         event.preventDefault();
         if (!gender || !dateOfBirth || !city || !district || !detail || !name || !phoneNumber) {
-            console.log('🚀 ~ file: Profile.js:75 ~ handleFormSubmit ~ phoneNumber:', phoneNumber);
-            console.log('🚀 ~ file: Profile.js:75 ~ handleFormSubmit ~ name:', name);
-            console.log('🚀 ~ file: Profile.js:75 ~ handleFormSubmit ~ detail:', detail);
-            console.log('🚀 ~ file: Profile.js:75 ~ handleFormSubmit ~ district:', district);
-            console.log('🚀 ~ file: Profile.js:75 ~ handleFormSubmit ~ city:', city);
-            console.log('🚀 ~ file: Profile.js:75 ~ handleFormSubmit ~ dateOfBirth:', dateOfBirth);
-            console.log('🚀 ~ file: Profile.js:75 ~ handleFormSubmit ~ gender:', gender);
             window.alert('Please enter all required information');
         } else {
             if (validateDateOfBirth(dateOfBirth) && validateFullName(name)) {
-                fetch(`http://localhost:3001/customers/${localStorage.getItem('customer_id')}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                })
-                    .then((respone) => respone.json())
-                    .then((data) => {
+                async function updateProfile() {
+                    try {
+                        let updateProfile = await customerApi.update(customerInfo.customer_id, data);
                         window.location.reload();
-                    });
+                    } catch (ex) {}
+                }
+                updateProfile();
             } else {
                 alert('Wrong data format');
             }
@@ -155,7 +148,7 @@ function Profile() {
                         <div className={cx('titleContainer')}>
                             <p className={cx('profileTitle')}>Email:</p>
                         </div>
-                        <p className={cx('content')}>{customerInfo.email}</p>
+                        <p className={cx('content')}>{email}</p>
                     </div>
                     <div className={cx('profileItem')}>
                         <div className={cx('titleContainer')}>
@@ -215,7 +208,7 @@ function Profile() {
                                     style={{ backgroundColor: '#f1f1f1', cursor: 'default' }}
                                     className={cx('input')}
                                     type="email"
-                                    defaultValue={customerInfo.email}
+                                    defaultValue={email}
                                     readOnly
                                 />
                                 <input

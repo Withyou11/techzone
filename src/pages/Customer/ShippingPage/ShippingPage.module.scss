@@ -14,10 +14,16 @@
     border-radius: 10px;
 }
 
-.personalInfoContainer {
+.personalInfo {
     font-size: 20px;
     margin: 0px;
     font-weight: 500;
+}
+
+.personalInfoInput {
+    margin: 4px 0;
+    padding: 10px;
+    background-color: #f1f1f1;
 }
 
 .cityContainer {

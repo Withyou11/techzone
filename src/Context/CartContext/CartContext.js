@@ -17,7 +17,7 @@ function CartProvider({ children }) {
             }
             getCart();
         }
-    }, []);
+    }, [localStorage.getItem('accessToken')]);
     const value = {
         cartItemsState,
         setCartItemsState,

@@ -60,7 +60,7 @@ function CustomerHeader() {
                     className={cx('tab', { active: localStorage.getItem('activeTab') === 'profile' })}
                     onClick={() => handleTabClick('profile')}
                 >
-                    <Link to={`/profile/${localStorage.getItem('customer_id')}`}>Profile</Link>
+                    <Link to={`/profile`}>Profile</Link>
                 </li>
             </ul>
             <div className={cx('loginContainer')}>

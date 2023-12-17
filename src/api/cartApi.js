@@ -33,13 +33,22 @@ const cartApi = {
     },
 
     update: async (cartId, data) => {
-        console.log('cartId: ', cartId);
-        const res = await axiosClient.post(`${url}${cartId}`, data);
+        const res = await axiosClient.put(`${url}${cartId}`, data);
         return res.data;
     },
 
     delete: async (category_id) => {
         const res = await axiosClient.delete(`${url}${category_id}`);
+        return res.data;
+    },
+
+    addDiscountToCart: async (cartId, discountId) => {
+        const res = await axiosClient.post(`${url}${cartId}/addDiscount/${discountId}`);
+        return res.data;
+    },
+
+    createOrderFromCart: async (cartId, data) => {
+        const res = await axiosClient.post(`${url}${cartId}/createOrder`, data);
         return res.data;
     },
 };
