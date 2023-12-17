@@ -14,41 +14,31 @@ import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import productApi from '~/api/productApi';
+import cartApi from '~/api/cartApi';
 
 function ProductDetail() {
     const cartItems = useContext(CartContext);
     const cartItemsState = cartItems.cartItemsState;
+    console.log('cartItemsState', cartItemsState);
     const setCartItemsState = cartItems.setCartItemsState;
     const { id } = useParams();
-    // const [selectedProduct, setSelectedProduct] = useState(products[id]);
     const [selectedProduct, setSelectedProduct] = useState({});
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [listSimilarProducts, setListSimilarProducts] = useState([]);
     useEffect(() => {
         async function productData() {
             try {
                 let productData = await productApi.getById(id);
-                console.log(productData);
+                let similarProductData = await productApi.getSimilarProducts(id);
                 setSelectedProduct(productData.data);
+                setListSimilarProducts(similarProductData.data);
             } catch (ex) {}
         }
         productData();
         window.scrollTo(0, 0);
     }, []);
-    // useEffect(() => {
-    //     fetch(`http://localhost:3001/products/${id}`, {
-    //         method: 'GET',
-    //     })
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             console.log(data.product);
-    //             setSelectedProduct(data.product);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    //     window.scrollTo(0, 0);
-    // }, []);
+
     const cx = classNames.bind(styles);
     const title = 'Home > Products > ' + selectedProduct.name;
     const filteredProducts = products.filter(
@@ -75,14 +65,12 @@ function ProductDetail() {
     const handleAddToCart = () => {
         if (selectedProduct.amount === 0) {
             setToastMessage('Please select another product because it is out of stock.');
-
-            // alert('Please select another product because out of stock');
             setShowToast(true);
             setTimeout(() => {
                 setShowToast(false);
             }, 3000);
         } else {
-            const productInCart = cartItemsState.listProduct?.find(
+            const productInCart = cartItemsState.cart_details?.find(
                 (item) => item.product_id == selectedProduct.product_id,
             );
             if (productInCart) {
@@ -94,7 +82,6 @@ function ProductDetail() {
                 // alert('Please select another product because you already have a product in the cart');
             } else {
                 const newItem = {
-                    customer_id: localStorage.getItem('customer_id'),
                     product_id: selectedProduct.product_id,
                 };
                 const newItem1 = {
@@ -106,31 +93,26 @@ function ProductDetail() {
                 };
                 const newItem2 = {
                     cart_id: cartItemsState.cart_id,
-                    discount_id: cartItemsState.discount,
-                    listProduct: [...cartItemsState.listProduct, newItem1],
+                    discount_id: cartItemsState.discount_id,
+                    cart_details: [...cartItemsState.cart_details, newItem1],
                     total_price: cartItemsState.total_price + selectedProduct.price,
                 };
-                fetch('http://localhost:3001/carts/add_to_cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newItem),
-                })
-                    .then((response) => response.json())
-                    .then((responseData) => {
+
+                async function addToCart() {
+                    try {
+                        let add_to_cart = await cartApi.addProductToCart(selectedProduct.product_id);
+                        console.log(add_to_cart);
                         setToastMessage('Product added to cart successfully.');
                         setShowToast(true);
                         setCartItemsState(newItem2);
                         setTimeout(() => {
                             setShowToast(false);
                         }, 3000);
-                        // window.alert('Add product to cart successfully');
-                    })
-                    .catch((error) => {
-                        // Handle any errors
-                        console.error(error);
-                    });
+                    } catch (ex) {
+                        alert('Add to cart failed!');
+                    }
+                }
+                addToCart();
             }
         }
     };
@@ -217,8 +199,8 @@ function ProductDetail() {
                 <p className={cx('highlightTitle')}>Similiar Products</p>
                 <hr style={{ margin: 0 }} />
                 <ul style={{ display: 'flex', flexDirection: 'row', overflow: 'auto' }}>
-                    {filteredProducts.map((product) => (
-                        <li key={product.id}>
+                    {listSimilarProducts.map((product, index) => (
+                        <li key={index}>
                             <ProductItem data={product} />
                         </li>
                     ))}

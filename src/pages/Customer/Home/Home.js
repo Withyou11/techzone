@@ -6,7 +6,6 @@ import ShortSidebar from '~/layouts/components/ShortSidebar/ShortSidebar';
 import SearchBar from '~/layouts/components/SearchBar/SearchBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import categories from '~/Statics/categories';
-import products from '~/Statics/products';
 import FeatureProductItem from '~/components/FeatureProductItem/FeatureProductItem';
 import CategoryItem from '~/components/CategoryItem/CategoryItem';
 import ProductItem from '~/components/ProductItem/ProductItem';
@@ -21,11 +20,35 @@ import {
     faHeadset,
     faTruckFast,
 } from '@fortawesome/free-solid-svg-icons';
+import productApi from '~/api/productApi';
+
 function Home() {
     const navigate = useNavigate();
+    const [bestSellerProducts, setBestSellerProducts] = useState([]);
+    const [topRateProducts, setTopRatedProducts] = useState([]);
+    const [recentProducts, setRecentProducts] = useState([]);
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        async function productData() {
+            try {
+                let listBest = await productApi.getTopSellingProducts();
+                let listTopRated = await productApi.getTopRatedProducts();
+                let listRecent = await productApi.getRecentlyCreatedProducts();
+                console.log(listBest.data);
+                console.log(listTopRated.data);
+                console.log(listRecent.data);
+
+                setBestSellerProducts(listBest.data);
+                setTopRatedProducts(listTopRated.data);
+                setRecentProducts(listRecent.data);
+            } catch (ex) {}
+        }
+        productData();
+    }, []);
+
     const cx = classNames.bind(styles);
     const handleSearch = (searchTerm) => {
         navigate('/products');
@@ -107,7 +130,7 @@ function Home() {
                 <h2 className={cx('bestSellerTitle')}>Our Best Seller</h2>
                 <hr style={{ margin: '20px 0' }} />
                 <div className={cx('bestSellerAllProducts')}>
-                    {products.slice(18, 26).map((item, index) => (
+                    {bestSellerProducts.map((item, index) => (
                         <div key={index}>
                             <ProductItem data={item} />
                         </div>
@@ -143,7 +166,11 @@ function Home() {
                 </div>
             </div>
             <div className={cx('topRateWrapper')}>
-                <TopRateTabs />
+                <TopRateTabs
+                    bestSellerProducts={bestSellerProducts}
+                    topRateProducts={topRateProducts}
+                    recentProducts={recentProducts}
+                />
             </div>
             <div className={cx('benefitContainer')}>
                 <div className={cx('benefitItem')}>

@@ -15,50 +15,15 @@ function ProductPage() {
     const { categoryName } = useParams();
     const cx = classNames.bind(styles);
     const [listProducts, setListProducts] = useState([]);
-    // const [listProducts, setListProducts] = useState([]);
-    // useEffect(() => {
-    //     window.scrollTo(0, 0);
-    //     fetch('http://localhost:3001/products', {
-    //         method: 'GET',
-    //     })
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             console.log(data);
-    //             setListProducts(data.listProduct);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    // }, []);
-
     useEffect(() => {
         async function productData() {
             try {
                 let list = await productApi.getAll();
-                // console.log(list.data);
+                console.log(list.data);
                 setListProducts(list.data);
-                // if (list.success) {
-                // setData(list.data);
-                // }
             } catch (ex) {}
         }
-        // async function fetchData() {
-        //     try {
-        //         let list = await categoryApi.getAll();
-        //         if (list.success) {
-        //             let categories = list.data.map((value, index) => {
-        //                 return {
-        //                     value: value.name,
-        //                     label: value.name,
-        //                 };
-        //             });
-        //             categories.push({ value: '', label: 'All' });
-        //             setIcons(categories);
-        //         }
-        //     } catch (ex) {}
-        // }
         productData();
-        // fetchData();
     }, []);
 
     const handleSearch = (searchTerm) => {

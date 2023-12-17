@@ -5,7 +5,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TopRatedProducts from '../TopRatedProducts/TopRatedProducts';
 
-function TopRateTabs() {
+function TopRateTabs({ bestSellerProducts, topRateProducts, recentProducts }) {
     const cx = classNames.bind(styles);
     const [activeTab, setActiveTab] = useState('topRated');
     const handleTabClick = (tab) => {
@@ -31,9 +31,9 @@ function TopRateTabs() {
                 </div>
             </div>
             {/* Hiển thị danh sách tương ứng với tab đang được chọn */}
-            {activeTab === 'topRated' && <TopRatedProducts data={1} />}
-            {activeTab === 'bestSelling' && <TopRatedProducts data={2} />}
-            {activeTab === 'recent' && <TopRatedProducts data={3} />}
+            {activeTab === 'topRated' && <TopRatedProducts data={bestSellerProducts} />}
+            {activeTab === 'bestSelling' && <TopRatedProducts data={topRateProducts} />}
+            {activeTab === 'recent' && <TopRatedProducts data={recentProducts} />}
         </div>
     );
 }

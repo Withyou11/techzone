@@ -52,9 +52,15 @@
     right: 50px;
 }
 
+.delete-icon {
+    color: black;
+}
+
 .delete:hover {
     background-color: #000000;
-    color: white;
+    .delete-icon {
+        color: white;
+    }
 }
 
 .amountContainer {
@@ -84,9 +90,15 @@
     background-color: white;
 }
 
+.decrease-icon {
+    color: black;
+}
+
 .decreaseButton:hover {
     background-color: #000000;
-    color: white;
+    .decrease-icon {
+        color: white;
+    }
 }
 
 .increaseButton {
@@ -99,7 +111,13 @@
     margin-right: 50px;
 }
 
+.increase-icon {
+    color: black;
+}
+
 .increaseButton:hover {
     background-color: #000000;
-    color: white;
+    .increase-icon {
+        color: white;
+    }
 }

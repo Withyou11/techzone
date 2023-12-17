@@ -21,12 +21,12 @@ const routes = {
     products: '/products',
     product_categoty: '/products/:categoryName',
     product_detail: '/detail/:id',
-    cart: '/cart/:id',
+    cart: '/cart',
     history: '/history/:id',
     login: '/login',
     register: '/register',
     shipping: '/shipping',
-    profile: '/profile/:id',
+    profile: '/profile',
     about: '/about',
 };
 

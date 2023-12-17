@@ -25,8 +25,8 @@ const customerApi = {
         return res.data;
     },
 
-    update: async (customer) => {
-        const res = await axiosClient.put(`${url}${customer.customer_id}`, customer);
+    update: async (customer_id, data) => {
+        const res = await axiosClient.put(`${url}${customer_id}`, data);
         return res.data;
     },
 

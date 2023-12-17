@@ -31,6 +31,26 @@ const productApi = {
         const res = await axiosClient.delete(`${url}${product_id}`);
         return res.data;
     },
+
+    getSimilarProducts: async (product_id) => {
+        const res = await axiosClient.get(`${url}similarProduct/${product_id}`);
+        return res.data;
+    },
+
+    getTopSellingProducts: async () => {
+        const res = await axiosClient.get(`${url}sell/bestSellProducts`);
+        return res.data;
+    },
+
+    getTopRatedProducts: async () => {
+        const res = await axiosClient.get(`${url}rate/topRateProducts`);
+        return res.data;
+    },
+
+    getRecentlyCreatedProducts: async () => {
+        const res = await axiosClient.get(`${url}sell/recentProduct`);
+        return res.data;
+    },
 };
 
 export default productApi;

@@ -5,42 +5,34 @@ import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../../../Context/CartContext/CartContext';
 import FunctionTitle from '~/components/FunctionTitle/FunctionTitle';
 import OnlineOrderItem from '~/components/OnlineOrderItem/OnlineOrderItem';
+import authApi from '~/api/authApi';
+import cartApi from '~/api/cartApi';
+
 function ShippingPage() {
     const [customerInfo, setCustomerInfo] = useState({});
     const [products, setProducts] = useState([]);
+    const [email, setEmail] = useState('');
+    const [newCity, setNewCity] = useState('');
+    const [newDistrict, setNewDistrict] = useState('');
+    const [newDetail, setNewDetail] = useState('');
+    const [destination, setDestination] = useState('');
     useEffect(() => {
-        fetch(`http://localhost:3001/customers/${localStorage.getItem('customer_id')}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((respone) => respone.json())
-            .then((data) => {
-                console.log(data);
-                setCustomerInfo(data.customer);
-            });
-
-        fetch('http://localhost:3001/products', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setProducts(data.listProduct);
-            })
-            .catch((error) => {
-                console.error('Error fetching products:', error);
-            });
-
+        async function getProfileInfo() {
+            try {
+                let profile = await authApi.profile();
+                setCustomerInfo(profile.customer);
+                setEmail(profile.email);
+                setDestination(`${profile.customer.detail}, ${profile.customer.district}, ${profile.customer.city}`);
+            } catch (ex) {}
+        }
+        getProfileInfo();
         window.scrollTo(0, 0);
     }, []);
     const cx = classNames.bind(styles);
     const cartItems = useContext(CartContext);
     const cartItemsState = cartItems.cartItemsState;
+    console.log(cartItemsState);
+    const [addressMode, setAddressMode] = useState('default');
 
     const navigate = useNavigate();
 
@@ -50,45 +42,72 @@ function ShippingPage() {
         setPaymentMethod(event.target.value);
     };
 
+    const handleAddressModeChange = (event) => {
+        setAddressMode(event.target.value);
+    };
+
+    useEffect(() => {
+        if (addressMode === 'default') {
+            setDestination(
+                `${customerInfo.address?.detail}, ${customerInfo.address?.district}, ${customerInfo.address?.city}`,
+            );
+        } else {
+            setDestination(`${newDetail}, ${newDistrict}, ${newCity}`);
+        }
+    }, [addressMode, newDetail, newDistrict, newCity]);
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (!customerInfo.address) {
+
+        console.log(destination);
+        if (destination === ', , ') {
             alert('Please enter full information');
         } else {
-            const productsWithInvalidQuantity = cartItemsState.listProduct?.filter((item) => {
-                const product = products.find((product) => product.id === item.productId);
+            const productsWithInvalidQuantity = cartItemsState.cart_details?.filter((item) => {
+                const product = products.find((product) => product.id === item.product.productId);
                 return product && (product.amount === 0 || item.quantity > product.amount);
             });
             if (productsWithInvalidQuantity.length > 0) {
-                alert(productsWithInvalidQuantity[0].name + ' exceeds the quantity in stock');
+                alert(productsWithInvalidQuantity[0].product.name + ' exceeds the quantity in stock');
             } else {
-                const data = {
-                    cart_id: cartItemsState.cart_id,
-                    payment_method: paymentMethod,
-                };
+                // const data = {
+                //     cart_id: cartItemsState.cart_id,
+                //     payment_method: paymentMethod,
+                // };
 
-                fetch('http://localhost:3001/carts/order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        navigate(`/history/${localStorage.getItem('customer_id')}`);
+                var form = new FormData();
+                form.append('payment_method', paymentMethod);
+                form.append('destination', destination);
+
+                async function createOrder() {
+                    try {
+                        let createOrder = await cartApi.createOrderFromCart(cartItemsState.cart_id, form);
                         window.location.reload();
-                    })
-                    .catch((error) => {
-                        // Handle any errors
-                        console.error(error);
-                    });
-
-                // Redirect to homepage
-                // alert('Order successfully');
+                    } catch (ex) {
+                        console.log(ex);
+                    }
+                }
+                createOrder();
+                // fetch('http://localhost:3001/carts/order', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify(data),
+                // })
+                //     .then((response) => response.json())
+                //     .then((data) => {
+                //         navigate(`/history/${localStorage.getItem('customer_id')}`);
+                //         window.location.reload();
+                //     })
+                //     .catch((error) => {
+                //         // Handle any errors
+                //         console.error(error);
+                //     });
             }
         }
     };
+
     return (
         <div>
             <FunctionTitle title="Check the information & Payment" />
@@ -96,7 +115,7 @@ function ShippingPage() {
                 <form className={cx('form')} onSubmit={handleSubmit}>
                     <h2 className={cx('title')}>Products Information</h2>
                     <div className={cx('personalInfoContainer')}>
-                        {cartItemsState.listProduct?.map((item, index) => (
+                        {cartItemsState.cart_details?.map((item, index) => (
                             <div key={index}>
                                 <OnlineOrderItem data={item} />
                             </div>
@@ -104,15 +123,71 @@ function ShippingPage() {
                     </div>
                     <h2 className={cx('title')}>Customer Information</h2>
                     <div className={cx('personalInfoContainer')}>
-                        <p className={cx('personalInfoContainer')}>Full name: {customerInfo?.name}</p>
-                        <p className={cx('personalInfoContainer')}>Phone number: {customerInfo?.phone_number}</p>
-                        <p className={cx('personalInfoContainer')}>Email address: {customerInfo?.email}</p>
+                        <p className={cx('personalInfo')}>Full name: {customerInfo?.name}</p>
+                        <p className={cx('personalInfo')}>Phone number: {customerInfo?.phone_number}</p>
+                        <p className={cx('personalInfo')}>Email address: {email}</p>
                     </div>
                     <h2 className={cx('title')}>Address Information</h2>
-                    <div className={cx('personalInfoContainer')}>
-                        <p className={cx('personalInfoContainer')}>City: {customerInfo.address?.city}</p>
-                        <p className={cx('personalInfoContainer')}>District: {customerInfo.address?.district}</p>
-                        <p className={cx('personalInfoContainer')}>Detail: {customerInfo.address?.detail}</p>
+                    <div>
+                        <div className={cx('radioContainer')}>
+                            <label className={cx('radioLabel')}>
+                                <input
+                                    type="radio"
+                                    name="addressMode"
+                                    value="default"
+                                    checked={addressMode === 'default'}
+                                    onChange={handleAddressModeChange}
+                                />
+                                Use Default Address
+                            </label>
+                            <label className={cx('radioLabel')}>
+                                <input
+                                    type="radio"
+                                    name="addressMode"
+                                    value="other"
+                                    checked={addressMode === 'other'}
+                                    onChange={handleAddressModeChange}
+                                />
+                                Edit Address
+                            </label>
+                        </div>
+
+                        <div>
+                            {addressMode === 'default' ? (
+                                <div className={cx('personalInfoContainer')}>
+                                    <p className={cx('personalInfo')}>City: {customerInfo.address?.city}</p>
+                                    <p className={cx('personalInfo')}>District: {customerInfo.address?.district}</p>
+                                    <p className={cx('personalInfo')}>Detail: {customerInfo.address?.detail}</p>
+                                </div>
+                            ) : (
+                                <div className={cx('radioContainer')}>
+                                    <input
+                                        className={cx('personalInfoInput')}
+                                        type="text"
+                                        placeholder="Enter City"
+                                        value={newCity}
+                                        onChange={(e) => setNewCity(e.target.value)}
+                                        disabled={addressMode === 'default'}
+                                    />
+                                    <input
+                                        className={cx('personalInfoInput')}
+                                        type="text"
+                                        placeholder="Enter District"
+                                        value={newDistrict}
+                                        onChange={(e) => setNewDistrict(e.target.value)}
+                                        disabled={addressMode === 'default'}
+                                    />
+                                    <input
+                                        className={cx('personalInfoInput')}
+                                        type="text"
+                                        placeholder="Enter Detail"
+                                        value={newDetail}
+                                        onChange={(e) => setNewDetail(e.target.value)}
+                                        disabled={addressMode === 'default'}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <h2 className={cx('title')}>Payment Method</h2>
                     <div className={cx('radioContainer')}>
