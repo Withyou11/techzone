@@ -37,6 +37,9 @@ function Home() {
                 let listBest = await productApi.getTopSellingProducts();
                 let listTopRated = await productApi.getTopRatedProducts();
                 let listRecent = await productApi.getRecentlyCreatedProducts();
+                console.log(listBest.data);
+                console.log(listTopRated.data);
+                console.log(listRecent.data);
 
                 setBestSellerProducts(listBest.data);
                 setTopRatedProducts(listTopRated.data);

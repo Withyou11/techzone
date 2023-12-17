@@ -9,10 +9,10 @@ function CartProvider({ children }) {
             async function getCart() {
                 try {
                     let cartData = await cartApi.viewCart();
+                    console.log(cartData);
                     setCartItemsState(cartData.data.cart);
                 } catch (ex) {
                     console.log(ex);
-                    alert('Get Cart data failed!');
                 }
             }
             getCart();

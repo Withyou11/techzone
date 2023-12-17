@@ -136,7 +136,7 @@ function CartPage() {
         var form = new FormData();
         form.append('product_id', itemId);
         form.append('quantity', quantity);
-
+        form.append('_method', 'PUT');
         async function increaseProductInCart() {
             try {
                 let increaseProduct = await cartApi.update(cartItemsState.cart_id, form);

@@ -19,6 +19,7 @@ function ProductPage() {
         async function productData() {
             try {
                 let list = await productApi.getAll();
+                console.log(list.data);
                 setListProducts(list.data);
             } catch (ex) {}
         }

@@ -34,8 +34,7 @@ const cartApi = {
 
     update: async (cartId, data) => {
         console.log('cartId: ', cartId);
-        console.log('data: ', data);
-        const res = await axiosClient.put(`${url}${cartId}`, data);
+        const res = await axiosClient.post(`${url}${cartId}`, data);
         return res.data;
     },
 

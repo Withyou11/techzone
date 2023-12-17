@@ -38,17 +38,17 @@ const productApi = {
     },
 
     getTopSellingProducts: async () => {
-        const res = await axiosClient.get(`${url}bestSellProducts`);
+        const res = await axiosClient.get(`${url}sell/bestSellProducts`);
         return res.data;
     },
 
     getTopRatedProducts: async () => {
-        const res = await axiosClient.get(`${url}topRateProducts`);
+        const res = await axiosClient.get(`${url}rate/topRateProducts`);
         return res.data;
     },
 
     getRecentlyCreatedProducts: async () => {
-        const res = await axiosClient.get(`${url}recentProduct`);
+        const res = await axiosClient.get(`${url}sell/recentProduct`);
         return res.data;
     },
 };
