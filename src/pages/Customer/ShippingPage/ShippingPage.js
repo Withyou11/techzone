@@ -70,11 +70,6 @@ function ShippingPage() {
             if (productsWithInvalidQuantity.length > 0) {
                 alert(productsWithInvalidQuantity[0].product.name + ' exceeds the quantity in stock');
             } else {
-                // const data = {
-                //     cart_id: cartItemsState.cart_id,
-                //     payment_method: paymentMethod,
-                // };
-
                 var form = new FormData();
                 form.append('payment_method', paymentMethod);
                 form.append('destination', destination);
@@ -82,28 +77,14 @@ function ShippingPage() {
                 async function createOrder() {
                     try {
                         let createOrder = await cartApi.createOrderFromCart(cartItemsState.cart_id, form);
+                        localStorage.setItem('activeTab', 'history');
+                        navigate(`/history/${localStorage.getItem('customerId')}`);
                         window.location.reload();
                     } catch (ex) {
                         console.log(ex);
                     }
                 }
                 createOrder();
-                // fetch('http://localhost:3001/carts/order', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify(data),
-                // })
-                //     .then((response) => response.json())
-                //     .then((data) => {
-                //         navigate(`/history/${localStorage.getItem('customer_id')}`);
-                //         window.location.reload();
-                //     })
-                //     .catch((error) => {
-                //         // Handle any errors
-                //         console.error(error);
-                //     });
             }
         }
     };

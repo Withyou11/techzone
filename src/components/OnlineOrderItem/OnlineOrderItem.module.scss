@@ -9,14 +9,14 @@
 
 .image {
     margin: 10px;
-    margin-right: 50px;
+    margin-right: 20px;
+    margin-left: 30px;
     width: 100px;
     height: 100px;
     object-fit: contain;
 }
 
 .nameContainer {
-    margin-left: 20px;
     margin-right: 10px;
     flex: 1;
     display: flex;
@@ -25,16 +25,19 @@
 
 .name {
     font-size: 18px;
+    margin-bottom: 4px;
 }
 
 .price {
     font-size: 18px;
     color: #e23600;
+    margin-bottom: 4px;
 }
 
 .amountText {
     font-size: 18px;
     color: black;
+    margin-bottom: 4px;
 }
 
 .reviewButton {

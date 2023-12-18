@@ -41,6 +41,7 @@ function Login() {
                 localStorage.setItem('refreshToken', login.refresh_token);
 
                 let profile = await authApi.profile();
+                console.log(profile);
                 localStorage.setItem('customerName', profile.customer.name);
                 localStorage.setItem('role', profile.role);
 
@@ -49,6 +50,7 @@ function Login() {
                 } else {
                     navigate('/admin/dashboard');
                 }
+                localStorage.setItem('customerId', profile.customer.customer_id);
                 // if else gì đó ở đây
             } catch (ex) {
                 alert('Login failed!');

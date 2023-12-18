@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './OnlineOrderItem.module.scss';
-function OnlineOrderItem({ data }) {
+function OnlineOrderItem({ data, status }) {
     const cx = classNames.bind(styles);
     return (
         <div className={cx('wrapper')}>
@@ -10,7 +10,7 @@ function OnlineOrderItem({ data }) {
                 <p className={cx('price')}>${data.product.price}</p>
                 <p className={cx('amountText')}>Quantity: {data.quantity}</p>
             </div>
-            {localStorage.getItem('activeTab') === 'history' && <button className={cx('reviewButton')}>Review</button>}
+            {status === 'Complete' && <button className={cx('reviewButton')}>Review</button>}
         </div>
     );
 }

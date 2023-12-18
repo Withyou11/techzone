@@ -19,6 +19,11 @@ const orderApi = {
         return res.data;
     },
 
+    getCustomerOrderHistory: async () => {
+        const res = await axiosClient.get(`orders/order/customer-history`);
+        return res.data;
+    },
+
     create: async (order) => {
         const res = await axiosClient.post(url, JSON.stringify(order));
         return res.data;
