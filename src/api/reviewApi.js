@@ -17,8 +17,13 @@ const reviewApi = {
         return res.data;
     },
 
-    create: async (order) => {
-        const res = await axiosClient.post(url, JSON.stringify(order));
+    create: async (review) => {
+        const res = await axiosClient.post(url, JSON.stringify(review), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(res);
         return res.data;
     },
 

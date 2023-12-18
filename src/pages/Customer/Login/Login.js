@@ -44,13 +44,13 @@ function Login() {
                 console.log(profile);
                 localStorage.setItem('customerName', profile.customer.name);
                 localStorage.setItem('role', profile.role);
-
+                localStorage.setItem('customerId', profile.customer.customer_id);
                 if (profile.role.includes('customer')) {
                     navigate('/');
                 } else {
                     navigate('/admin/dashboard');
                 }
-                localStorage.setItem('customerId', profile.customer.customer_id);
+
                 // if else gì đó ở đây
             } catch (ex) {
                 alert('Login failed!');

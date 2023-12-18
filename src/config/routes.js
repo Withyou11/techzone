@@ -16,7 +16,7 @@ const routes = {
     detailWarehouse: '/admin/warehouse/:id',
     adminDiscount: '/admin/discounts',
     adminOrderTracker: '/admin/order-tracker',
-
+    reviewProduct: '/order/review',
     detailProduct: '/admin/products/detail/:id',
     products: '/products',
     product_categoty: '/products/:categoryName',

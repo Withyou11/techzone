@@ -222,7 +222,7 @@ function OrderDetail() {
                                             'border-0',
                                             'btn-custom',
                                         )}
-                                        onClick={(e) => handleChangeStatus('Cancel')}
+                                        onClick={(e) => handleChangeStatus('Canceled')}
                                     >
                                         Cancel
                                     </button>

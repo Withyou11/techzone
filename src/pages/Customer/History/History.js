@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import PurchaseHistoryItem from '~/components/PurchaseHistoryItem/PurchaseHistoryItem';
 import orderApi from '~/api/orderApi';
+import { NotificationManager } from 'react-notifications';
 
 function History() {
     const [histories, setHistories] = useState([]);
@@ -38,26 +39,19 @@ function History() {
     //     });
 
     const cx = classNames.bind(styles);
-    const handleDelete = (order_id) => {
-        const data = {
-            order_id: order_id,
-            status: 'Canceled',
-        };
-        fetch(`http://localhost:3001/orders/update_status`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                window.location.reload();
-            })
-            .catch((error) => {
-                // Handle any errors
-                console.error(error);
+    const handleDelete = async (order_id) => {
+        try {
+            let list = await orderApi.updateStatus(order_id, {
+                status: 'Canceled',
             });
+            console.log(list);
+
+            if (list.success) {
+                NotificationManager.success('Cancel order successfully');
+            } else NotificationManager.error('Cancel order failed');
+        } catch (ex) {
+            NotificationManager.error('Error: ' + ex.message);
+        }
     };
     return (
         <div>
