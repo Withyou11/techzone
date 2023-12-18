@@ -38,7 +38,7 @@ function PurchaseHistoryItem({ data, onDelete }) {
         <div className={cx('wrapper')}>
             <div className={cx('actions')}>
                 <button onClick={handleDelete} className={cx('delete')}>
-                    <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+                    <FontAwesomeIcon icon={faXmark} style={{ color: 'black' }}></FontAwesomeIcon>
                 </button>
             </div>
             <div className={cx('orderInfoContainer')}>
@@ -50,16 +50,14 @@ function PurchaseHistoryItem({ data, onDelete }) {
                 </p>
             </div>
             <hr style={{ margin: 0 }}></hr>
-            {data.listProduct.map((item, index) => (
+            {data.order_details.map((item, index) => (
                 <div key={index}>
-                    <OnlineOrderItem data={item} />
+                    <OnlineOrderItem data={item} status={data.status} />
                 </div>
             ))}
             <div className={cx('orderInfoContainer')}>
                 <p className={cx('date')}>{data.date.substring(0, 10)}</p>
-                <p className={cx('destination')}>
-                    {data.destination.detail}, {data.destination.district}, {data.destination.city}
-                </p>
+                <p className={cx('destination')}>{data.destination}</p>
                 <div className={cx('moneyContainer')}>
                     <p className={cx('totalText')}>Order total:</p>
                     <p className={cx('totalValue')}>${data.total_price}.00</p>

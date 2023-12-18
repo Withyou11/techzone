@@ -57,7 +57,7 @@ function CustomerHeader() {
                     className={cx('tab', { active: localStorage.getItem('activeTab') === 'history' })}
                     onClick={() => handleTabClick('history')}
                 >
-                    <Link to={`/history/${localStorage.getItem('customer_id')}`}>Purchase History</Link>
+                    <Link to={`/history/${localStorage.getItem('customerId')}`}>Purchase History</Link>
                 </li>
                 <li
                     className={cx('tab', { active: localStorage.getItem('activeTab') === 'about' })}

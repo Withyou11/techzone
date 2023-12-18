@@ -41,7 +41,9 @@ function Login() {
                 localStorage.setItem('refreshToken', login.refresh_token);
 
                 let profile = await authApi.profile();
+                console.log(profile);
                 localStorage.setItem('customerName', profile.customer.name);
+                localStorage.setItem('customerId', profile.customer.customer_id);
                 // if else gì đó ở đây
                 navigate('/');
             } catch (ex) {
