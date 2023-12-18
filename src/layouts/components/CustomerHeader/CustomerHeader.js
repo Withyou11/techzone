@@ -19,6 +19,7 @@ function CustomerHeader() {
     const cartItemsState = cartItems.cartItemsState;
     const cx = classNames.bind(styles);
     const handleTabClick = (tabName) => {
+        localStorage.removeItem('activeTab');
         localStorage.setItem('activeTab', tabName);
         // setActiveTab(tabName);
     };

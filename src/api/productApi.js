@@ -7,6 +7,12 @@ const productApi = {
         return res.data;
     },
 
+    searchProduct: async (search) => {
+        console.log('search:', search);
+        const res = await axiosClient.get(`${url}product/searchProducts?keyword=${search}`);
+        return res.data;
+    },
+
     getPage: async (page) => {
         const res = await axiosClient.get('/products?page=' + page);
         return res.data;

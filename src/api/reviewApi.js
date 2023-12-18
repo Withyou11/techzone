@@ -17,6 +17,11 @@ const reviewApi = {
         return res.data;
     },
 
+    getReviewsByProduct: async (productId) => {
+        const res = await axiosClient.get(`${url}review/reviewsByProduct/${productId}`);
+        return res.data;
+    },
+
     create: async (order) => {
         const res = await axiosClient.post(url, JSON.stringify(order));
         return res.data;
