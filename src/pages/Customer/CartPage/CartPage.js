@@ -294,7 +294,9 @@ function CartPage() {
                     </div>
                     <div className={cx('discountContainer')}>
                         <p className={cx('title')}>TOTAL</p>
-                        <p className={cx('content')}>${cartItemsState?.total_price}</p>
+                        <p className={cx('content')}>
+                            ${!cartItemsState?.total_price ? 0 : cartItemsState?.total_price}
+                        </p>
                     </div>
                 </div>
                 <div className={cx('nextButton')}>
