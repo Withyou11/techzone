@@ -33,7 +33,7 @@ const cartApi = {
     },
 
     update: async (cartId, data) => {
-        const res = await axiosClient.put(`${url}${cartId}`, data);
+        const res = await axiosClient.patch(`${url}${cartId}`, data);
         return res.data;
     },
 

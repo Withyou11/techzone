@@ -20,7 +20,7 @@ function CartPage() {
     const cartItems = useContext(CartContext);
     const cartItemsState = cartItems.cartItemsState;
     const setCartItemsState = cartItems.setCartItemsState;
-    const [couponVisible, setCouponVisible] = useState(true);
+    const [couponVisible, setCouponVisible] = useState(!cartItemsState?.discount?.discount_value);
     const [discountValue, setDiscountValue] = useState(
         cartItemsState?.discount === null ? 0 : cartItemsState?.discount,
     );
@@ -186,15 +186,15 @@ function CartPage() {
         async function applyDiscount() {
             try {
                 let aplDiscount = await cartApi.addDiscountToCart(cartItemsState.cart_id, inputValue);
-                // var discountValue = responseData.discount_value;
+                // var discountValue = aplDiscount[1].discount_value;
                 // const updateItem = {
                 //     cart_id: cartItemsState.cart_id,
                 //     discount_id: cartItemsState.discount,
                 //     cart_details: cartItemsState.cart_details,
-                //     discount_value: responseData.discount_value,
+                //     discount_value: aplDiscount[1].discount_value,
                 //     total_price: cartItemsState.total_price - discountValue,
                 // };
-                // setDiscountValue(responseData.discount_value);
+                // setDiscountValue(aplDiscount[1].discount_value);
                 // if (discountValue > 0) {
                 //     setCartItemsState(updateItem);
                 // }
@@ -272,11 +272,15 @@ function CartPage() {
                     />
                     {couponVisible && (
                         <button onClick={handleCheck} className={cx('couponButton')}>
-                            <FontAwesomeIcon icon={faQuestion}></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faQuestion} style={{ color: 'black' }}></FontAwesomeIcon>
                         </button>
                     )}
                     {!couponVisible && (
-                        <FontAwesomeIcon className={cx('couponButton1')} icon={faCheck}></FontAwesomeIcon>
+                        <FontAwesomeIcon
+                            className={cx('couponButton1')}
+                            icon={faCheck}
+                            style={{ color: 'black' }}
+                        ></FontAwesomeIcon>
                     )}
                 </div>
                 {couponNotify && <p className={cx('couponNotify')}>Discount code is not correct</p>}
@@ -285,7 +289,7 @@ function CartPage() {
                     <div className={cx('discountContainer')}>
                         <p className={cx('title')}>DISCOUNT</p>
                         <p className={cx('content')}>
-                            ${cartItemsState?.discount === null ? 0 : cartItemsState?.discount}
+                            ${!cartItemsState?.discount?.discount_value ? 0 : cartItemsState?.discount?.discount_value}
                         </p>
                     </div>
                     <div className={cx('discountContainer')}>
