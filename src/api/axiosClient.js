@@ -10,7 +10,6 @@ axiosClient.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('accessToken');
         if (token) {
-            console.log(token);
             config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;
@@ -26,7 +25,7 @@ axiosClient.interceptors.response.use(
     async (err) => {
         const originalConfig = err.config;
 
-        if (originalConfig.url !== '/auth/signin' && err.response) {
+        if (originalConfig.url !== '/auth/login' && err.response) {
             // Access Token was expired
 
             if (err.response.status === 401) {
@@ -37,7 +36,7 @@ axiosClient.interceptors.response.use(
                         refreshToken: localStorage.getItem('refreshToken'),
                     });
 
-                    const { accessToken } = rs.data;
+                    const accessToken = rs.data.access_token;
 
                     if (accessToken) {
                         localStorage.setItem('accessToken', accessToken);
@@ -46,6 +45,9 @@ axiosClient.interceptors.response.use(
 
                     return axiosClient(originalConfig);
                 } catch (_error) {
+                    alert('Your session has been expired. Please log in again!');
+                    localStorage.clear();
+                    window.location = '/login';
                     return Promise.reject(_error);
                 }
             }

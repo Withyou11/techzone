@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../../Context/CartContext/CartContext';
-
+import authApi from '~/api/authApi';
 function CustomerHeader() {
     const navigate = useNavigate();
     const cartItems = useContext(CartContext);
@@ -30,22 +30,25 @@ function CustomerHeader() {
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('expires');
         localStorage.removeItem('activeTab');
+        try {
+            authApi.logout();
+        } catch (ex) {}
         navigate('/login');
     };
 
     return (
         <header className={cx('wrapper')}>
             <div onClick={() => handleTabClick('home')} className={cx('logoContainer')}>
-                <a href="/#" className={cx('logoText')}>
+                <Link to={'/'} className={cx('logoText')}>
                     TechZone
-                </a>
+                </Link>
             </div>
             <ul className={cx('tabList')}>
                 <li
                     className={cx('tab', { active: localStorage.getItem('activeTab') === 'home' })}
                     onClick={() => handleTabClick('home')}
                 >
-                    <a href="/#">Home</a>
+                    <a href="/">Home</a>
                 </li>
                 <li
                     className={cx('tab', { active: localStorage.getItem('activeTab') === 'products' })}
@@ -57,7 +60,7 @@ function CustomerHeader() {
                     className={cx('tab', { active: localStorage.getItem('activeTab') === 'history' })}
                     onClick={() => handleTabClick('history')}
                 >
-                    <Link to={`/history/${localStorage.getItem('customer_id')}`}>Purchase History</Link>
+                    <Link to={`/history/${localStorage.getItem('customer_id')}`}>Purchase</Link>
                 </li>
                 <li
                     className={cx('tab', { active: localStorage.getItem('activeTab') === 'about' })}
@@ -65,12 +68,16 @@ function CustomerHeader() {
                 >
                     <Link to="/about">About us</Link>
                 </li>
-                <li
-                    className={cx('tab', { active: localStorage.getItem('activeTab') === 'profile' })}
-                    onClick={() => handleTabClick('profile')}
-                >
-                    <Link to={`/profile`}>Profile</Link>
-                </li>
+                {localStorage.getItem('customerName') ? (
+                    <li
+                        className={cx('tab', { active: localStorage.getItem('activeTab') === 'profile' })}
+                        onClick={() => handleTabClick('profile')}
+                    >
+                        <Link to={`/profile`}>Profile</Link>
+                    </li>
+                ) : (
+                    ''
+                )}
             </ul>
             <div className={cx('loginContainer')}>
                 <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
@@ -95,12 +102,18 @@ function CustomerHeader() {
                     ></FontAwesomeIcon>
                 </Link>
             </div>
-            <div onClick={handleLogout} className={cx('cartContainer')}>
-                <FontAwesomeIcon
-                    style={{ fontSize: '22px', color: 'black' }}
-                    icon={faRightFromBracket}
-                ></FontAwesomeIcon>
-            </div>
+            {localStorage.getItem('customerName') ? (
+                <div onClick={handleLogout} className={cx('cartContainer')}>
+                    <FontAwesomeIcon
+                        style={{ fontSize: '22px', color: 'black' }}
+                        icon={faRightFromBracket}
+                    ></FontAwesomeIcon>
+                </div>
+            ) : (
+                <div onClick={handleLogout} className={cx('cartContainer')}>
+                    LOGIN
+                </div>
+            )}
         </header>
     );
 }

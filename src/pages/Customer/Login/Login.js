@@ -42,8 +42,14 @@ function Login() {
 
                 let profile = await authApi.profile();
                 localStorage.setItem('customerName', profile.customer.name);
+                localStorage.setItem('role', profile.role);
+
+                if (profile.role.includes('customer')) {
+                    navigate('/');
+                } else {
+                    navigate('/admin/dashboard');
+                }
                 // if else gì đó ở đây
-                navigate('/');
             } catch (ex) {
                 alert('Login failed!');
             }
@@ -53,10 +59,10 @@ function Login() {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('header')}>
+            <Link to={'/'} className={cx('header')}>
                 <p className={cx('limo')}>TechZone</p>
                 <p className={cx('title')}>Login</p>
-            </div>
+            </Link>
             <div className={cx('content')}>
                 <div className={cx('logoContainer')}>
                     <img className={cx('logo')} src={logo} alt="logo" />

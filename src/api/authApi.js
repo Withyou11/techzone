@@ -11,6 +11,10 @@ const authApi = {
         const res = await axiosClient.get(`${url}profile`);
         return res.data;
     },
+    logout: async () => {
+        const res = await axiosClient.post(`${url}logout`);
+        return res.data;
+    },
 };
 
 export default authApi;
