@@ -16,6 +16,11 @@ const customerApi = {
         return res.data;
     },
 
+    getCustomerOrders: async (customer_id) => {
+        const res = await axiosClient.get(`${url}${customer_id}/orders`);
+        return res.data;
+    },
+
     create: async (customer) => {
         const res = await axiosClient.post(url, customer);
         return res.data;

@@ -3,7 +3,13 @@ import classNames from 'classnames/bind';
 import styles from './CustomerHeader.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { faArrowRightFromBracket, faCartShopping, faHeart, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowRightFromBracket,
+    faCartShopping,
+    faHeart,
+    faMagnifyingGlass,
+    faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../../Context/CartContext/CartContext';
 
@@ -17,10 +23,13 @@ function CustomerHeader() {
         // setActiveTab(tabName);
     };
     const handleLogout = () => {
-        localStorage.removeItem('customer_id');
-        localStorage.removeItem('role');
+        localStorage.removeItem('customerName');
+        localStorage.removeItem('employee');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('employee_id');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('expires');
         localStorage.removeItem('activeTab');
-        localStorage.removeItem('name');
         navigate('/login');
     };
 
@@ -85,6 +94,12 @@ function CustomerHeader() {
                         icon={faCartShopping}
                     ></FontAwesomeIcon>
                 </Link>
+            </div>
+            <div onClick={handleLogout} className={cx('cartContainer')}>
+                <FontAwesomeIcon
+                    style={{ fontSize: '22px', color: 'black' }}
+                    icon={faRightFromBracket}
+                ></FontAwesomeIcon>
             </div>
         </header>
     );

@@ -1,7 +1,22 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
+import customerApi from '~/api/customerApi';
 const HistoryContext = createContext();
-
 function HistoryProvider({ children }) {
+    // const [cartItemsState, setCartItemsState] = useState({});
+    // useEffect(() => {
+    //     if (localStorage.getItem('customerName')) {
+    //         async function getOrder() {
+    //             try {
+    //                 let ordersData = await customerApi.getCustomerOrders();
+    //                 console.log(ordersData);
+    //                 // setCartItemsState(cartData.data.cart);
+    //             } catch (ex) {
+    //                 console.log(ex);
+    //             }
+    //         }
+    //         getOrder();
+    //     }
+    // }, [localStorage.getItem('accessToken')]);
     let orderHistory = [
         {
             orderId: 'ABC123',
