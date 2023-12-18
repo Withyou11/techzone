@@ -23,6 +23,7 @@ const reviewApi = {
                 'Content-Type': 'application/json',
             },
         });
+        return res.data;
     },
     getReviewsByProduct: async (productId) => {
         const res = await axiosClient.get(`${url}review/reviewsByProduct/${productId}`);

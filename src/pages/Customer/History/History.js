@@ -48,6 +48,9 @@ function History() {
 
             if (list.success) {
                 NotificationManager.success('Cancel order successfully');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             } else NotificationManager.error('Cancel order failed');
         } catch (ex) {
             NotificationManager.error('Error: ' + ex.message);

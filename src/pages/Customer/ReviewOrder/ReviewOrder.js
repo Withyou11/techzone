@@ -39,14 +39,15 @@ const ProductReview = () => {
                 NotificationManager.success('Thank for your review');
                 setRating(0);
                 setReviewText('');
+                setTimeout(() => {
+                    goBack();
+                }, 1000);
             } else {
                 NotificationManager.error('Review product failed');
             }
         } catch (ex) {
-            console.log(ex);
             NotificationManager.error('Review product failed');
         }
-        // Reset the form after submission
     };
 
     return (
