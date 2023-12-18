@@ -27,17 +27,17 @@ function ProductPage() {
     }, []);
 
     const handleSearch = (searchTerm) => {
-        fetch(`http://localhost:3001/products/search?q=${searchTerm}`, {
-            method: 'GET',
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setListProducts(data.listProduct);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        async function productData() {
+            // const data = {
+            //     product_name: searchTerm,
+            // };
+            try {
+                let list = await productApi.searchProduct(searchTerm);
+                console.log(list);
+                setListProducts(list.data);
+            } catch (ex) {}
+        }
+        productData();
     };
     return (
         <div className={cx('wrapper')}>

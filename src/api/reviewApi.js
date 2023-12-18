@@ -23,7 +23,9 @@ const reviewApi = {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(res);
+    },
+    getReviewsByProduct: async (productId) => {
+        const res = await axiosClient.get(`${url}review/reviewsByProduct/${productId}`);
         return res.data;
     },
 

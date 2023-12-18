@@ -15,6 +15,7 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import productApi from '~/api/productApi';
 import cartApi from '~/api/cartApi';
+import reviewApi from '~/api/reviewApi';
 
 function ProductDetail() {
     const cartItems = useContext(CartContext);
@@ -26,13 +27,17 @@ function ProductDetail() {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [listSimilarProducts, setListSimilarProducts] = useState([]);
+    const [listReviews, setListReviews] = useState([]);
     useEffect(() => {
         async function productData() {
             try {
                 let productData = await productApi.getById(id);
                 let similarProductData = await productApi.getSimilarProducts(id);
+                let reviewData = await reviewApi.getReviewsByProduct(id);
+                console.log(reviewData.data);
                 setSelectedProduct(productData.data);
                 setListSimilarProducts(similarProductData.data);
+                setListReviews(reviewData.data);
             } catch (ex) {}
         }
         productData();
@@ -187,14 +192,16 @@ function ProductDetail() {
                 </div>
             </div>
             {selectedProduct.specifications && <TechnicalSpecification data={selectedProduct?.specifications} />}
-            {selectedProduct.highlight?.content !== null && selectedProduct.highlight?.image !== null && (
-                <div className={cx('highlightContainer')}>
-                    <p className={cx('highlightTitle')}> Highlight Features</p>
-                    <hr style={{ margin: 0 }} />
-                    <p className={cx('highlightContent')}>{selectedProduct.highlight?.content}</p>
-                    <img className={cx('highlightImage')} src={selectedProduct.highlight?.image} alt="product" />
-                </div>
-            )}
+            {selectedProduct.highlight && <TechnicalSpecification data={selectedProduct?.highlight} />}
+            <p className={cx('highlightTitle')}>All Reviews</p>
+            <hr style={{ margin: 0, marginBottom: '12px' }} />
+            <div className={cx('reviewCotainer')}>
+                {listReviews.map((review, index) => (
+                    <li key={index} style={{ listStyle: 'none' }}>
+                        <ReviewItem data={review} />
+                    </li>
+                ))}
+            </div>
             <div className={cx('highlightContainer')}>
                 <p className={cx('highlightTitle')}>Similiar Products</p>
                 <hr style={{ margin: 0 }} />
@@ -206,15 +213,7 @@ function ProductDetail() {
                     ))}
                 </ul>
             </div>
-            <p className={cx('highlightTitle')}>All Reviews</p>
-            <hr style={{ margin: 0, marginBottom: '12px' }} />
-            {/* <div className={cx('reviewCotainer')}>
-                {selectedProduct.reviews.map((review) => (
-                    <li key={review.id} style={{ listStyle: 'none' }}>
-                        <ReviewItem data={review} />
-                    </li>
-                ))}
-            </div> */}
+
             {showToast && (
                 <ToastContainer position="bottom-end" className="p-3" style={{ zIndex: 1 }}>
                     <Toast className={cx('toast')}>
