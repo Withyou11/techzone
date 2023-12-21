@@ -130,10 +130,10 @@ function OrderDetail() {
                                 <Card.Header className={cx('card-header-style')}>
                                     <h3 className={cx('h2', 'fw-bold')}>Shipping Address</h3>
                                 </Card.Header>
-                                <Card.Body className={cx('p-4')}>
+                                {/* <Card.Body className={cx('p-4')}>
                                     <div>{'Street: ' + JSON.parse(item.destination).street}</div>
                                     <div>{'City: ' + JSON.parse(item.destination).city}</div>
-                                </Card.Body>
+                                </Card.Body> */}
                             </Card>
                         </div>
                         <div className={cx('col-lg-4')}>

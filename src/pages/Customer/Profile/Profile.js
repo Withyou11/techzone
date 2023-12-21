@@ -5,6 +5,7 @@ import FunctionTitle from '~/components/FunctionTitle/FunctionTitle';
 import avatar from '~/assets/images/avatar.png';
 import authApi from '~/api/authApi';
 import customerApi from '~/api/customerApi';
+import { NotificationManager } from 'react-notifications';
 
 function Profile() {
     const [customerInfo, setCustomerInfo] = useState({});
@@ -74,17 +75,15 @@ function Profile() {
         if (!gender || !dateOfBirth || !city || !district || !detail || !name || !phoneNumber) {
             window.alert('Please enter all required information');
         } else {
-            if (validateDateOfBirth(dateOfBirth) && validateFullName(name)) {
-                async function updateProfile() {
-                    try {
-                        let updateProfile = await customerApi.update(customerInfo.customer_id, data);
-                        window.location.reload();
-                    } catch (ex) {}
-                }
-                updateProfile();
-            } else {
-                alert('Wrong data format');
+            // if (validateDateOfBirth(dateOfBirth) && validateFullName(name)) {
+            async function updateProfile() {
+                try {
+                    let updateProfile = await customerApi.update(customerInfo.customer_id, data);
+                    window.location.reload();
+                    NotificationManager.success('Update profile successful');
+                } catch (ex) {}
             }
+            updateProfile();
         }
     };
 

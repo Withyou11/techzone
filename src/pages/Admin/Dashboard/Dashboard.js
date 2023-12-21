@@ -79,25 +79,25 @@ function Dashboard() {
                         <div className={cx('figure-item-content')}>
                             <h4 className={cx('figure-item-title')}>Revenue</h4>
                             <h2 className={cx('figure-item-value')}>${revenue}</h2>
-                            <p>vs. 3 months prior to 27 Feb</p>
+                            {/* <p>vs. 3 months prior to 27 Feb</p> */}
                         </div>
-                        <h6 className={cx('figure-item-trending-up')}>11.4%</h6>
+                        {/* <h6 className={cx('figure-item-trending-up')}>11.4%</h6> */}
                     </div>
                     <div className={cx('figure-item')}>
                         <div className={cx('figure-item-content')}>
                             <h4 className={cx('figure-item-title')}>Orders</h4>
                             <h2 className={cx('figure-item-value')}>{orderCount}</h2>
-                            <p>vs. 3 months prior to 27 Feb</p>
+                            {/* <p>vs. 3 months prior to 27 Feb</p> */}
                         </div>
-                        <h6 className={cx('figure-item-trending-down')}>3.2%</h6>
+                        {/* <h6 className={cx('figure-item-trending-down')}>3.2%</h6> */}
                     </div>
                     <div className={cx('figure-item')}>
                         <div className={cx('figure-item-content')}>
-                            <h4 className={cx('figure-item-title')}>Purchase</h4>
+                            <h4 className={cx('figure-item-title')}>Customer</h4>
                             <h2 className={cx('figure-item-value')}>{custCount}</h2>
-                            <p>vs. 3 months prior to 27 Feb</p>
+                            {/* <p>vs. 3 months prior to 27 Feb</p> */}
                         </div>
-                        <h6 className={cx('figure-item-trending-up')}>5.7%</h6>
+                        {/* <h6 className={cx('figure-item-trending-up')}>5.7%</h6> */}
                     </div>
                 </div>
                 <div className={cx('statistics')}>
